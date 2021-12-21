@@ -16,6 +16,9 @@ public class Managers : MonoBehaviour
     ResourceManager _resourceM = new ResourceManager();
     public static ResourceManager ResourceM { get { return instance._resourceM; } }
 
+    UpdateManager _updateM = new UpdateManager();
+    public static UpdateManager UpdateM { get { return instance._updateM; } }
+
     private void Awake()
     {
         Init();
@@ -42,6 +45,19 @@ public class Managers : MonoBehaviour
     private void OnDestroy()
     {
         instance = null;
+    }
+
+    private void Update()
+    {
+        _updateM.OnUpdate();
+    }
+
+    /// <summary>
+    /// 씬 전환 시 클리어
+    /// </summary>
+    public void Clear()
+    {
+        UpdateM.Clear();
     }
 
 #if UNITY_EDITOR
