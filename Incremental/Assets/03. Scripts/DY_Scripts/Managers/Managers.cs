@@ -13,6 +13,9 @@ public class Managers : MonoBehaviour
     static Managers instance;
     public static Managers Instance { get { return instance; } }
 
+    DataManager _dataM = new DataManager();
+    public static DataManager DataM { get { return instance._dataM; } }
+
     ResourceManager _resourceM = new ResourceManager();
     public static ResourceManager ResourceM { get { return instance._resourceM; } }
 

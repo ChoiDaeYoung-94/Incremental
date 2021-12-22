@@ -17,12 +17,22 @@ public class BgScroll : MonoBehaviour
     float _offset = 0;
 
     /// <summary>
-    /// Scroll - UpdateM에 등록
+    /// BgManager.cs에서 돌릴 BG를 Init
+    /// Scroll - UpdateM - action 등록
     /// </summary>
-    private void Start()
+    public void Init()
     {
-        Managers.UpdateM._update -= Scroll;
-        Managers.UpdateM._update += Scroll;
+        Managers.UpdateM._updateBgScroll -= Scroll;
+        Managers.UpdateM._updateBgScroll += Scroll;
+    }
+
+    /// <summary>
+    /// 비활성화 시 action 해제
+    /// </summary>
+    private void OnDisable()
+    {
+        if (Managers.Instance != null)
+            Managers.UpdateM._updateBgScroll -= Scroll;
     }
 
     /// <summary>
