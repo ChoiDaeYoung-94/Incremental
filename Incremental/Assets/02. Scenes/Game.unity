@@ -684,6 +684,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8971281769945824075, guid: 8930bc224c01fb54a80b7f4b76b4428a, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8971625045661748927, guid: 8930bc224c01fb54a80b7f4b76b4428a, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8971942123893313913, guid: 8930bc224c01fb54a80b7f4b76b4428a, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8973287046272552521, guid: 8930bc224c01fb54a80b7f4b76b4428a, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8973368764049878857, guid: 8930bc224c01fb54a80b7f4b76b4428a, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8973376549742520981, guid: 8930bc224c01fb54a80b7f4b76b4428a, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8930bc224c01fb54a80b7f4b76b4428a, type: 3}
 --- !u!1001 &4051679851078745830
@@ -808,27 +832,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a68fbe25a1f49a448c9e40b46e5e656, type: 3}
---- !u!1 &4588603234498131066 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7922447019196375230, guid: d0d7ceeb6e708f14c9829590a083c9dd, type: 3}
-  m_PrefabInstance: {fileID: 5935693466200003780}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4588603234498131067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4588603234498131066}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83b4920c39ffcfd4590329f257d6d887, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _monster: 1
-  _hp: 0
-  _speed: 0
-  _startPos: {x: 0, y: 0}
 --- !u!114 &4643699173079503796 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7567462127251852367, guid: f6fe080b3589c534fbfabfba2be343f9, type: 3}

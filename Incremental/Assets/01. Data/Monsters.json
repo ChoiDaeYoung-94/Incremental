@@ -1,0 +1,14 @@
+{
+	"Monster_1" : {
+		"Hp" : 50,
+		"Speed" : 10,
+	},
+	"Monster_2" : {
+		"Hp" : 75,
+		"Speed" : 15,
+	},
+	"Monster_3" : {
+		"Hp" : 150,
+		"Speed" : 30,
+	}
+}
