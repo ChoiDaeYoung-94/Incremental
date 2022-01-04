@@ -16,9 +16,18 @@ public abstract class MonsterBase : MonoBehaviour
     [SerializeField, Tooltip("몬스터 생성 위치")]
     protected Vector2 _startPos = new Vector2();
 
+    /// <summary>
+    /// 몬스터 정보 DataM에서 받고 초기화
+    /// </summary>
     protected virtual void Init()
     {
-        Debug.Log(_monster.ToString());
+        Dictionary<string, object> cur_monster = Managers.DataM._dic_monsters[_monster.ToString()] as Dictionary<string, object>;
+
+        if (!int.TryParse(cur_monster["Hp"].ToString(), out _hp))
+            DebugError.Parse("MonsterBase", _monster.ToString() + " - Hp");
+
+        if (!int.TryParse(cur_monster["Speed"].ToString(), out _speed))
+            DebugError.Parse("MonsterBase", _monster.ToString() + " - Speed");
     }
 
     public abstract void Clear();

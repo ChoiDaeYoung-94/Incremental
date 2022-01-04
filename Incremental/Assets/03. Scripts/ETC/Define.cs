@@ -7,7 +7,10 @@ public class Define : MonoBehaviour
     /// </summary>
     public enum BgName
     {
-        BG_01
+        BG_01,
+        BG_02,
+        BG_03,
+        BG_04
     }
 
     /// <summary>
@@ -16,6 +19,8 @@ public class Define : MonoBehaviour
     public enum Monsters
     {
         Base,
-        Monster_1
+        Monster_1,
+        Monster_2,
+        Monster_3
     }
 }
