@@ -11,10 +11,6 @@ public abstract class MonsterBase : MonoBehaviour
     [Header("--- 참고용 ---")]
     [SerializeField, Tooltip("몬스터 체력")]
     protected int _hp = 0;
-    [SerializeField, Tooltip("몬스터 스피드")]
-    protected int _speed = 0;
-    [SerializeField, Tooltip("몬스터 생성 위치")]
-    protected Vector2 _startPos = new Vector2();
 
     /// <summary>
     /// 몬스터 정보 DataM에서 받고 초기화
@@ -25,9 +21,6 @@ public abstract class MonsterBase : MonoBehaviour
 
         if (!int.TryParse(cur_monster["Hp"].ToString(), out _hp))
             DebugError.Parse("MonsterBase", _monster.ToString() + " - Hp");
-
-        if (!int.TryParse(cur_monster["Speed"].ToString(), out _speed))
-            DebugError.Parse("MonsterBase", _monster.ToString() + " - Speed");
     }
 
     public abstract void Clear();

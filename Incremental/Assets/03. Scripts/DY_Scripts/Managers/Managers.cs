@@ -16,6 +16,9 @@ public class Managers : MonoBehaviour
     DataManager _dataM = new DataManager();
     public static DataManager DataM { get { return instance._dataM; } }
 
+    PoolManager _poolM = new PoolManager();
+    public static PoolManager PoolM { get { return instance._poolM; } }
+
     ResourceManager _resourceM = new ResourceManager();
     public static ResourceManager ResourceM { get { return instance._resourceM; } }
 

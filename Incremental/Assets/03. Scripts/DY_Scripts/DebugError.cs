@@ -17,13 +17,13 @@ public class DebugError
         Debug.LogError("<color=red>Error</color> - " + where + "\nThere is no " + item);
     }
 
-    public static void LoadError(string where, string pass)
+    public static void LoadWarning(string where, string pass)
     {
-        Debug.LogError("<color=red>Error</color> - " + where + "\nFailed to Load - path : " + pass);
+        Debug.LogWarning("<color=red>Error</color> - " + where + "\nFailed to Load - path : " + pass);
     }
 
-    public static void InstantiateError(string where, string pass)
+    public static void InstantiateWarning(string where, string pass)
     {
-        Debug.LogError("<color=red>Error</color> - " + where + "\nFailed to Instantiate - path : " + pass);
+        Debug.LogWarning("<color=red>Error</color> - " + where + "\nFailed to Instantiate - path : " + pass);
     }
 }

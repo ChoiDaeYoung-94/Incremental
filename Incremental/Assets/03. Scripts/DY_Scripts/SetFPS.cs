@@ -5,7 +5,7 @@ using UnityEngine;
 public class SetFPS : MonoBehaviour
 {
     [SerializeField, Tooltip("프레임 설정")]
-    int _fps = 30;
+    int _fps = 60;
 
     private void Awake()
     {
