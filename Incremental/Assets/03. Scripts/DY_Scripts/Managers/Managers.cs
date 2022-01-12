@@ -45,6 +45,7 @@ public class Managers : MonoBehaviour
             instance = go.GetComponent<Managers>();
 
             DataM.Init();
+            PoolM.Init();
         }
         else
             Destroy(gameObject);
@@ -67,6 +68,7 @@ public class Managers : MonoBehaviour
     public void InitM()
     {
         DataM.Init();
+        PoolM.Init();
     }
 
     /// <summary>
@@ -76,6 +78,7 @@ public class Managers : MonoBehaviour
     public void Clear()
     {
         UpdateM.Clear();
+        PoolM.Clear();
     }
 
 #if UNITY_EDITOR
