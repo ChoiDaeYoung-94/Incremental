@@ -25,6 +25,10 @@ public class Managers : MonoBehaviour
     UpdateManager _updateM = new UpdateManager();
     public static UpdateManager UpdateM { get { return instance._updateM; } }
 
+    [Header("--- 미리 가지고 있어야 할 data ---")]
+    [Tooltip("활성화된 PoolObject 관리")]
+    public Transform _tr_activePool = null;
+
     private void Awake()
     {
         Init();
@@ -78,7 +82,7 @@ public class Managers : MonoBehaviour
     public void Clear()
     {
         UpdateM.Clear();
-        PoolM.Clear();
+        //PoolM.Clear();
     }
 
 #if UNITY_EDITOR

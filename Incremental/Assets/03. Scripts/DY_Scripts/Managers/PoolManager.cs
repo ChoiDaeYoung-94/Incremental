@@ -6,120 +6,212 @@ public class PoolManager
 {
     class Pool
     {
-        public GameObject GO { get; private set; }
+        /// <summary>
+        /// Pool에 생성할 GameObject
+        /// </summary>
+        public GameObject GO_poolTarget { get; private set; }
+
+        /// <summary>
+        /// Pool에 생성할 GameObject의 root Transform
+        /// </summary>
         public Transform Root { get; set; }
 
-        Stack<PoolObject> _poolStack = new Stack<PoolObject>();
+        /// <summary>
+        /// 생성된 PoolObject 관리, 메서드로 Push, Pop 관리
+        /// </summary>
+        Stack<PoolObject> _Stack_pool = new Stack<PoolObject>();
 
-        public void Init(GameObject go, int count = 5)
+        /// <summary>
+        /// Pool 생성 시 Init
+        /// -> Pool아래에 생성할 오브젝트의 Root 생성 후 create
+        /// </summary>
+        /// <param name="go"></param>
+        /// <param name="root"></param>
+        /// <param name="count"></param>
+        public void Init(GameObject go, string root, int count)
         {
-            GO = go;
-            Root = new GameObject().transform;
-            Root.name = $"{go.name}";
+            GO_poolTarget = go;
 
+            // root가 이미 있으면 그 아래에
+            for (int i = -1; ++i < Managers.PoolM._root.childCount;)
+            {
+                if (Managers.PoolM._root.GetChild(i).name == root)
+                {
+                    Root = Managers.PoolM._root.GetChild(i).transform;
+                    break;
+                }
+            }
+
+            // root가 없으면 생성
+            if (string.IsNullOrEmpty(Root.name))
+            {
+                Root = new GameObject().transform;
+                Root.name = $"{root}";
+            }
+
+            // count만큼 pool로
             for (int i = -1; ++i < count;)
-                PushToPool(Creat());
+                PushToPool(Create());
         }
 
-        PoolObject Creat()
+        /// <summary>
+        /// GO_poolTarget 생성 후 PoolObject반환
+        /// [ 혹시 PoolObject가 없을 수 있으니 없으면 Add ]
+        /// </summary>
+        /// <returns></returns>
+        PoolObject Create()
         {
-            GameObject go = Object.Instantiate<GameObject>(GO);
-            go.name = GO.name;
-            return go.GetComponent_<PoolObject>();
+            GameObject go = Object.Instantiate(GO_poolTarget);
+            go.name = GO_poolTarget.name;
+
+            PoolObject poolObj = go.GetComponent_<PoolObject>();
+            // 추후 다시 풀로 돌아갈 때 가야할 root를 알기 위해
+            poolObj._str_inactiveRootName = Root.name;
+
+            return poolObj;
         }
 
+        /// <summary>
+        /// 생성된 go의 root를 맞추고 비활성화 후 stack에 push
+        /// </summary>
+        /// <param name="poolObj"></param>
         public void PushToPool(PoolObject poolObj)
         {
+            // 혹시 모를...
             if (poolObj == null)
                 return;
 
             poolObj.transform.parent = Root;
             poolObj.gameObject.SetActive(false);
 
-            _poolStack.Push(poolObj);
+            _Stack_pool.Push(poolObj);
         }
 
+        /// <summary>
+        /// Stack에서 Pop을 할 때 Stack이 비워있을 경우 Create
+        /// 사용할 것이니까 활성화 후 transform 정리
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <returns></returns>
         public PoolObject PopFromPool(Transform parent)
         {
             PoolObject poolObj;
 
-            if (_poolStack.Count > 0)
-                poolObj = _poolStack.Pop();
+            if (_Stack_pool.Count > 0)
+                poolObj = _Stack_pool.Pop();
             else
-                poolObj = Creat();
+                poolObj = Create();
 
             poolObj.gameObject.SetActive(true);
 
             if (parent == null)
-                poolObj.transform.parent = Managers.Instance.gameObject.transform;
-
-            poolObj.transform.parent = parent;
+                poolObj.transform.parent = Managers.Instance._tr_activePool;
+            else
+                poolObj.transform.parent = parent;
 
             return poolObj;
         }
     }
-    Dictionary<string, Pool> _pool = new Dictionary<string, Pool>();
 
-    /// <summary>
-    /// Pool의 root Transform
-    /// </summary>
-    Transform _root;
+    [Tooltip("Pool 관리 할 Dictionary - _root아래의 root, Pool로 관리")]
+    Dictionary<string, Pool> _dic_pool = new Dictionary<string, Pool>();
+
+    [Tooltip("Pool의 root Transform")]
+    public Transform _root;
 
     /// <summary>
     /// Managers - Awake() -> Init()
+    /// Pool에 둬야 할 것들 미리 생성
     /// </summary>
     public void Init()
     {
+        // root 생성
         if (_root == null)
         {
             _root = new GameObject { name = "Pool" }.transform;
             Object.DontDestroyOnLoad(_root);
         }
+
+        //TODO -> Pool 생성 할 것들 쫙
     }
 
-    public void CreatePool(GameObject go, int count = 5)
+    /// <summary>
+    /// Pool 생성 (기본 5개 씩)
+    /// </summary>
+    /// <param name="go"></param>
+    /// <param name="root"></param>
+    /// <param name="count"></param>
+    public void CreatePool(GameObject go, string root, int count = 5)
     {
         Pool pool = new Pool();
-        pool.Init(go, count);
+        pool.Init(go, root, count);
         pool.Root.parent = _root;
 
-        _pool.Add(go.name, pool);
+        _dic_pool.Add(root, pool);
     }
 
+    /// <summary>
+    /// 사용한 PoolObj를 Pool에 다시 Push
+    /// -> ResourceM에서 Destroy를 받으면서 PoolObject를
+    /// 가지고 있으면 Pool에 Push하는 느낌으로 
+    /// </summary>
+    /// <param name="poolObj"></param>
     public void PushToPool(PoolObject poolObj)
     {
-        string name = poolObj.gameObject.name;
+        string rootName = poolObj._str_inactiveRootName;
 
-        if (!_pool.ContainsKey(name))
+        // 혹시 모를...
+        if (!_dic_pool.ContainsKey(rootName))
         {
             GameObject.Destroy(poolObj.gameObject);
             return;
         }
 
-        _pool[name].PushToPool(poolObj);
+        // Stack으로 push
+        _dic_pool[rootName].PushToPool(poolObj);
     }
 
+    /// <summary>
+    /// _dic_pool에서 Pool에 있는 사용할 go Pop
+    /// -> ResourceM에서 Instantiate_를 받으면서 PoolObject를
+    /// 가지고 있으면 Pool에서 Pop하는 느낌으로 
+    /// </summary>
+    /// <param name="go"></param>
+    /// <param name="parent"></param>
+    /// <returns></returns>
     public PoolObject PopFromPool(GameObject go, Transform parent = null)
     {
-        if (!_pool.ContainsKey(go.name))
-            CreatePool(go);
+        PoolObject poolObj = go.GetComponent<PoolObject>();
 
-        return _pool[go.name].PopFromPool(parent);
+        // 혹시 모를...
+        if (!_dic_pool.ContainsKey(poolObj._str_inactiveRootName))
+            CreatePool(go, poolObj._str_inactiveRootName);
+
+        return _dic_pool[poolObj._str_inactiveRootName].PopFromPool(parent);
     }
 
+    /// <summary>
+    /// 아 이게 좀 애매하다 음..
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public GameObject GetGO(string name)
     {
-        if (_pool.ContainsKey(name) == false)
+        if (_dic_pool.ContainsKey(name) == false)
             return null;
 
-        return _pool[name].GO;
+        return _dic_pool[name].GO_poolTarget;
     }
 
+    /// <summary>
+    /// Pool 날릴 때 사용
+    /// 현재 Managers - Clear()에 주석 처리 중 -> 거진 사용 안할 듯
+    /// </summary>
     public void Clear()
     {
         foreach (Transform child in _root)
             GameObject.Destroy(child.gameObject);
 
-        _pool.Clear();
+        _dic_pool.Clear();
     }
 }
