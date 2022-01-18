@@ -43,7 +43,7 @@ public class PoolManager
             }
 
             // root가 없으면 생성
-            if (string.IsNullOrEmpty(Root.name))
+            if (Root == null)
             {
                 Root = new GameObject().transform;
                 Root.name = $"{root}";
@@ -105,7 +105,7 @@ public class PoolManager
             poolObj.gameObject.SetActive(true);
 
             if (parent == null)
-                poolObj.transform.parent = Managers.Instance._tr_activePool;
+                poolObj.transform.parent = GameObject.Find("ActivePool").transform;
             else
                 poolObj.transform.parent = parent;
 
@@ -132,7 +132,8 @@ public class PoolManager
             Object.DontDestroyOnLoad(_root);
         }
 
-        //TODO -> Pool 생성 할 것들 쫙
+        for (int i = -1; ++i < Managers.Instance._go_poolMonsters.Length;)
+            CreatePool(Managers.Instance._go_poolMonsters[i], "Monsters");
     }
 
     /// <summary>
@@ -143,17 +144,19 @@ public class PoolManager
     /// <param name="count"></param>
     public void CreatePool(GameObject go, string root, int count = 5)
     {
-        Pool pool = new Pool();
-        pool.Init(go, root, count);
-        pool.Root.parent = _root;
-
-        _dic_pool.Add(root, pool);
+        if (_dic_pool.ContainsKey(root))
+            _dic_pool[root].Init(go, root, count);
+        else
+        {
+            Pool pool = new Pool();
+            pool.Init(go, root, count);
+            pool.Root.parent = _root;
+            _dic_pool.Add(root, pool);
+        }
     }
 
     /// <summary>
     /// 사용한 PoolObj를 Pool에 다시 Push
-    /// -> ResourceM에서 Destroy를 받으면서 PoolObject를
-    /// 가지고 있으면 Pool에 Push하는 느낌으로 
     /// </summary>
     /// <param name="poolObj"></param>
     public void PushToPool(PoolObject poolObj)
@@ -172,35 +175,18 @@ public class PoolManager
     }
 
     /// <summary>
-    /// _dic_pool에서 Pool에 있는 사용할 go Pop
-    /// -> ResourceM에서 Instantiate_를 받으면서 PoolObject를
-    /// 가지고 있으면 Pool에서 Pop하는 느낌으로 
+    /// _dic_pool에서 Pool에 있는 사용할 go를 Pop
     /// </summary>
     /// <param name="go"></param>
     /// <param name="parent"></param>
     /// <returns></returns>
-    public PoolObject PopFromPool(GameObject go, Transform parent = null)
+    public PoolObject PopFromPool(PoolObject poolObj, Transform parent = null)
     {
-        PoolObject poolObj = go.GetComponent<PoolObject>();
-
         // 혹시 모를...
         if (!_dic_pool.ContainsKey(poolObj._str_inactiveRootName))
-            CreatePool(go, poolObj._str_inactiveRootName);
+            CreatePool(poolObj.gameObject, poolObj._str_inactiveRootName);
 
         return _dic_pool[poolObj._str_inactiveRootName].PopFromPool(parent);
-    }
-
-    /// <summary>
-    /// 아 이게 좀 애매하다 음..
-    /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
-    public GameObject GetGO(string name)
-    {
-        if (_dic_pool.ContainsKey(name) == false)
-            return null;
-
-        return _dic_pool[name].GO_poolTarget;
     }
 
     /// <summary>

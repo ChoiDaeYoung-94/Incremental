@@ -7,20 +7,6 @@ public class ResourceManager
         if (Resources.Load<T>(path) == null)
             DebugError.LoadWarning(where, path);
 
-        if (typeof(T) == typeof(GameObject))
-        {
-            string name = path;
-            // 경로의 마지막 /를 찾는
-            int index = name.LastIndexOf('/');
-            if (index >= 0)
-                name = name.Substring(index + 1);
-
-            GameObject go = Managers.PoolM.GetGO(name);
-
-            if (go != null)
-                return go as T;
-        }
-
         return Resources.Load<T>(path);
     }
 
@@ -32,9 +18,6 @@ public class ResourceManager
             DebugError.InstantiateWarning(where, path);
             return null;
         }
-
-        if (go.GetComponent<PoolObject>() != null)
-            return Managers.PoolM.PopFromPool(go, parent).gameObject;
 
         return Object.Instantiate(go, parent);
     }

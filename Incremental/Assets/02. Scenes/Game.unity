@@ -212,6 +212,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86520dff06331754e9944c1f8e3e0075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _go_poolMonsters:
+  - {fileID: 7922447019196375230, guid: d0d7ceeb6e708f14c9829590a083c9dd, type: 3}
+  - {fileID: 189855943031746699, guid: 63c23ab47ade7854d994eda9aa37efc3, type: 3}
+  - {fileID: 2648109434431253980, guid: 4bd770405581cdd4cbcec094adb5ca78, type: 3}
 --- !u!1 &358461483
 GameObject:
   m_ObjectHideFlags: 0

@@ -26,8 +26,8 @@ public class Managers : MonoBehaviour
     public static UpdateManager UpdateM { get { return instance._updateM; } }
 
     [Header("--- 미리 가지고 있어야 할 data ---")]
-    [Tooltip("활성화된 PoolObject 관리")]
-    public Transform _tr_activePool = null;
+    [Tooltip("Pool에 사용할 GameObjects")]
+    public GameObject[] _go_poolMonsters = null;
 
     private void Awake()
     {

@@ -14,7 +14,7 @@ public class Define : MonoBehaviour
     }
 
     /// <summary>
-    /// 사용하는 몬스터 이름
+    /// 사용하는 몬스터 이름 (Pool에 사용)
     /// </summary>
     public enum Monsters
     {
