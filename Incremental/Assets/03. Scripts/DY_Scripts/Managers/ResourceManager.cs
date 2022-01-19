@@ -21,19 +21,4 @@ public class ResourceManager
 
         return Object.Instantiate(go, parent);
     }
-
-    public void Destroy(GameObject go)
-    {
-        if (go == null)
-            return;
-
-        PoolObject poolable = go.GetComponent<PoolObject>();
-        if (poolable != null)
-        {
-            Managers.PoolM.PushToPool(poolable);
-            return;
-        }
-
-        Object.Destroy(go);
-    }
 }

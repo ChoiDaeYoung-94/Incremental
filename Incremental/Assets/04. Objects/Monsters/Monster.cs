@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class Monster : MonsterBase
 {
-    private void Start()
+    private void Awake()
     {
         Init();
     }

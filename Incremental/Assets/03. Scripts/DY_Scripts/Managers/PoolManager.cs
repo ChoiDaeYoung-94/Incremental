@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PoolManager
 {
-    class Pool
+    #region Pool
+    public class Pool
     {
         /// <summary>
         /// Pool에 생성할 GameObject
@@ -17,7 +18,7 @@ public class PoolManager
         public Transform Root { get; set; }
 
         /// <summary>
-        /// 생성된 PoolObject 관리, 메서드로 Push, Pop 관리
+        /// 생성된 PoolObject Stack으로 관리, 메서드로 Push, Pop 관리
         /// </summary>
         Stack<PoolObject> _Stack_pool = new Stack<PoolObject>();
 
@@ -26,28 +27,14 @@ public class PoolManager
         /// -> Pool아래에 생성할 오브젝트의 Root 생성 후 create
         /// </summary>
         /// <param name="go"></param>
-        /// <param name="root"></param>
+        /// <param name="go_name"></param>
         /// <param name="count"></param>
-        public void Init(GameObject go, string root, int count)
+        public void Init(GameObject go, string go_name, int count)
         {
             GO_poolTarget = go;
 
-            // root가 이미 있으면 그 아래에
-            for (int i = -1; ++i < Managers.PoolM._root.childCount;)
-            {
-                if (Managers.PoolM._root.GetChild(i).name == root)
-                {
-                    Root = Managers.PoolM._root.GetChild(i).transform;
-                    break;
-                }
-            }
-
-            // root가 없으면 생성
-            if (Root == null)
-            {
-                Root = new GameObject().transform;
-                Root.name = $"{root}";
-            }
+            Root = new GameObject().transform;
+            Root.name = $"{go_name}";
 
             // count만큼 pool로
             for (int i = -1; ++i < count;)
@@ -65,8 +52,6 @@ public class PoolManager
             go.name = GO_poolTarget.name;
 
             PoolObject poolObj = go.GetComponent_<PoolObject>();
-            // 추후 다시 풀로 돌아갈 때 가야할 root를 알기 위해
-            poolObj._str_inactiveRootName = Root.name;
 
             return poolObj;
         }
@@ -93,7 +78,7 @@ public class PoolManager
         /// </summary>
         /// <param name="parent"></param>
         /// <returns></returns>
-        public PoolObject PopFromPool(Transform parent)
+        public void PopFromPool(Transform parent)
         {
             PoolObject poolObj;
 
@@ -105,16 +90,24 @@ public class PoolManager
             poolObj.gameObject.SetActive(true);
 
             if (parent == null)
-                poolObj.transform.parent = GameObject.Find("ActivePool").transform;
+            {
+                Transform tr = null;
+
+                if (GameObject.Find("ActivePool") == null)
+                    tr = new GameObject { name = "ActivePool" }.transform;
+                else
+                    tr = GameObject.Find("ActivePool").transform;
+
+                poolObj.transform.parent = tr;
+            }
             else
                 poolObj.transform.parent = parent;
-
-            return poolObj;
         }
     }
+    #endregion
 
-    [Tooltip("Pool 관리 할 Dictionary - _root아래의 root, Pool로 관리")]
-    Dictionary<string, Pool> _dic_pool = new Dictionary<string, Pool>();
+    [Tooltip("Pool 관리 할 Dictionary - _root아래의 생성할 poolGO.name, Pool로 관리")]
+    public Dictionary<string, Pool> _dic_pool = new Dictionary<string, Pool>();
 
     [Tooltip("Pool의 root Transform")]
     public Transform _root;
@@ -133,60 +126,60 @@ public class PoolManager
         }
 
         for (int i = -1; ++i < Managers.Instance._go_poolMonsters.Length;)
-            CreatePool(Managers.Instance._go_poolMonsters[i], "Monsters");
+            CreatePool(Managers.Instance._go_poolMonsters[i], Managers.Instance._go_poolMonsters[i].name);
     }
 
     /// <summary>
     /// Pool 생성 (기본 5개 씩)
     /// </summary>
     /// <param name="go"></param>
-    /// <param name="root"></param>
+    /// <param name="go_name"></param>
     /// <param name="count"></param>
-    public void CreatePool(GameObject go, string root, int count = 5)
+    public void CreatePool(GameObject go, string go_name, int count = 5)
     {
-        if (_dic_pool.ContainsKey(root))
-            _dic_pool[root].Init(go, root, count);
-        else
-        {
-            Pool pool = new Pool();
-            pool.Init(go, root, count);
-            pool.Root.parent = _root;
-            _dic_pool.Add(root, pool);
-        }
+        Pool pool = new Pool();
+        pool.Init(go, go_name, count);
+        pool.Root.parent = _root;
+
+        _dic_pool.Add(go_name, pool);
     }
 
     /// <summary>
     /// 사용한 PoolObj를 Pool에 다시 Push
     /// </summary>
-    /// <param name="poolObj"></param>
-    public void PushToPool(PoolObject poolObj)
+    /// <param name="go"></param>
+    public void PushToPool(GameObject go)
     {
-        string rootName = poolObj._str_inactiveRootName;
+        if (go == null)
+            return;
+
+        PoolObject poolObj = go.GetComponent<PoolObject>();
 
         // 혹시 모를...
-        if (!_dic_pool.ContainsKey(rootName))
+        if (poolObj == null || !_dic_pool.ContainsKey(go.name))
         {
-            GameObject.Destroy(poolObj.gameObject);
+            Object.Destroy(go);
             return;
         }
 
         // Stack으로 push
-        _dic_pool[rootName].PushToPool(poolObj);
+        _dic_pool[go.name].PushToPool(poolObj);
     }
 
     /// <summary>
     /// _dic_pool에서 Pool에 있는 사용할 go를 Pop
     /// </summary>
-    /// <param name="go"></param>
+    /// <param name="go_name"></param>
     /// <param name="parent"></param>
-    /// <returns></returns>
-    public PoolObject PopFromPool(PoolObject poolObj, Transform parent = null)
+    public void PopFromPool(string go_name, Transform parent = null)
     {
-        // 혹시 모를...
-        if (!_dic_pool.ContainsKey(poolObj._str_inactiveRootName))
-            CreatePool(poolObj.gameObject, poolObj._str_inactiveRootName);
+        if (!_dic_pool.ContainsKey(go_name))
+        {
+            DebugError.Contain("PoolManager", $"{go_name} in _dic_pool");
+            return;
+        }
 
-        return _dic_pool[poolObj._str_inactiveRootName].PopFromPool(parent);
+        _dic_pool[go_name].PopFromPool(parent);
     }
 
     /// <summary>
