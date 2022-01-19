@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using MiniJSON;
-
 public class DataManager
 {
     [Header("--- 참고용 ---")]

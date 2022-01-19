@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Time_ : MonoBehaviour
 {
-    // 다음 날 00:00 반환 - Datetime
+    /// <summary>
+    /// 다음 날 00:00 반환 - Datetime
+    /// </summary>
+    /// <returns></returns>
     public static DateTime GetTomorrow_Datetime()
     {
         DateTime temp_DT = DateTime.Now.AddDays(1);
@@ -13,7 +16,10 @@ public class Time_ : MonoBehaviour
         return Convert.ToDateTime(temp_str);
     }
 
-    // 다음 날 (00:00)까지 남은 시간 반환 -> double
+    /// <summary>
+    /// 다음 날 (00:00)까지 남은 시간 반환 -> double
+    /// </summary>
+    /// <returns></returns>
     public static double GetTomorrow_TotalSeconds()
     {
         DateTime temp_DT = DateTime.Now.AddDays(1);
@@ -25,7 +31,32 @@ public class Time_ : MonoBehaviour
         return span.TotalSeconds;
     }
 
-    // 현재 시간에서 매 정각 반환(현 시간이 3시면 4시반환) - Datetime
+    /// <summary>
+    /// 받은 DateTime에서 day만 ++1 => 24시간 뒤를 반환
+    /// </summary>
+    /// <returns></returns>
+    public static DateTime GetPlusOneDay_Datetime(DateTime DT)
+    {
+        DateTime temp_DT = DT.AddDays(1);
+
+        return temp_DT;
+    }
+
+    /// <summary>
+    /// 받은 DateTime(미래) - 현재 시간을 반환 -> double
+    /// </summary>
+    /// <returns></returns>
+    public static double GetPlusOneDay_TotalSeconds(DateTime DT)
+    {
+        TimeSpan span = DT - DateTime.Now;
+
+        return span.TotalSeconds;
+    }
+
+    /// <summary>
+    /// 현재 시간에서 매 정각 반환(현 시간이 3시면 4시반환) - Datetime
+    /// </summary>
+    /// <returns></returns>
     public static DateTime GetHour_Datetime()
     {
         DateTime temp_DT = DateTime.Now.AddHours(1);
@@ -34,7 +65,10 @@ public class Time_ : MonoBehaviour
         return Convert.ToDateTime(temp_str);
     }
 
-    // 현재 시간에서 매 정각(현 시간이 3시면 4시반환)까지 남은 시간 반환 - double
+    /// <summary>
+    /// 현재 시간에서 매 정각(현 시간이 3시면 4시반환)까지 남은 시간 반환 - double
+    /// </summary>
+    /// <returns></returns>
     public static double GetHour_TotalSeconds()
     {
         DateTime temp_DT = DateTime.Now.AddHours(1);
@@ -46,7 +80,14 @@ public class Time_ : MonoBehaviour
         return span.TotalSeconds;
     }
 
-    // string or int 형식의 시간(초)을 string으로 반환
+    /// <summary>
+    /// string or int 형식의 시간(초)을 string으로 반환
+    /// </summary>
+    /// <param name="time"></param>
+    /// <param name="plusZero"></param>
+    /// <param name="plusSecond"></param>
+    /// <param name="colon"></param>
+    /// <returns></returns>
     public static string TimeToString(object time, bool plusZero = false, bool plusSecond = false, bool colon = false)
     {
         double _time = 0;
@@ -71,7 +112,10 @@ public class Time_ : MonoBehaviour
             second = ((int)_time % 60).ToString();
         }
         else
+        {
+            minute = "0";
             second = ((int)_time).ToString();
+        }
 
         if (plusZero)
         {
@@ -100,7 +144,12 @@ public class Time_ : MonoBehaviour
         return temp.ToString();
     }
 
-    // 일일 출석 보상 로그인 후 갱신 체크 - 마지막 로그인 날 보다 하루가 더 지났을 경우 true
+    /// <summary>
+    /// 일일 출석 보상 로그인 후 갱신 체크 - 마지막 로그인 날 보다 하루가 더 지났을 경우 true
+    /// </summary>
+    /// <param name="nowday"></param>
+    /// <param name="oldDay"></param>
+    /// <returns></returns>
     public static bool IsDailyRewardUpdateLogin(DateTime nowday, DateTime oldDay)
     {
         TimeSpan span = nowday - oldDay;
@@ -116,15 +165,25 @@ public class Time_ : MonoBehaviour
         return false;
     }
 
-    // 일일 출석 보상 Update()에서 다음 날 갱신 체크 - 로그인 후 GetTomorrow로 받아온 날과 같아지면
+    /// <summary>
+    /// 일일 출석 보상 Update()에서 다음 날 갱신 체크 - 로그인 후 GetTomorrow로 받아온 날과 같아지면
+    /// </summary>
+    /// <param name="nowday"></param>
+    /// <param name="tomorrow"></param>
+    /// <returns></returns>
     public static bool IsDailyRewardUpdateCheck(DateTime nowday, DateTime tomorrow)
     {
         TimeSpan span = nowday - tomorrow;
-        if (span.TotalDays >= 0 && nowday.Day == tomorrow.Day) return true;
+        if (span.TotalDays >= 0) return true;
         else return false;
     }
 
-    // 광고 보상 로그인 후 갱신 체크 - 마지막 로그인 날 보다 한시간이 더 지났을 경우 true
+    /// <summary>
+    /// 광고 보상 로그인 후 갱신 체크 - 마지막 로그인 날 보다 한시간이 더 지났을 경우 true 
+    /// </summary>
+    /// <param name="nowHour"></param>
+    /// <param name="oldHour"></param>
+    /// <returns></returns>
     public static bool IsADRewardUpdateLogin(DateTime nowHour, DateTime oldHour)
     {
         TimeSpan span = nowHour - oldHour;
@@ -140,7 +199,12 @@ public class Time_ : MonoBehaviour
         return false;
     }
 
-    // 광고 보상 Update()에서 정각 갱신 체크 - 로그인 후 GetHour로 받아온 시간과 같아지면
+    /// <summary>
+    /// 광고 보상 Update()에서 정각 갱신 체크 - 로그인 후 GetHour로 받아온 시간과 같아지면
+    /// </summary>
+    /// <param name="nowHour"></param>
+    /// <param name="hour"></param>
+    /// <returns></returns>
     public static bool IsADRewardUpdateCheck(DateTime nowHour, DateTime hour)
     {
         TimeSpan span = nowHour - hour;
@@ -148,7 +212,13 @@ public class Time_ : MonoBehaviour
         else return false;
     }
 
-    // 일일 퀘스트 남은 시간 string 반환
+    /// <summary>
+    /// 일일 퀘스트 남은 시간 string 반환
+    /// </summary>
+    /// <param name="tomorrow"></param>
+    /// <param name="today"></param>
+    /// <param name="plusZero"></param>
+    /// <returns></returns>
     public static string update_Time(DateTime tomorrow, DateTime today, bool plusZero = false)
     {
         string temp = string.Empty;
