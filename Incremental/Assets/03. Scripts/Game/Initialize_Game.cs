@@ -13,7 +13,8 @@ public class Initialize_Game : MonoBehaviour
     /// </summary>
     enum Scripts
     {
-        BgManage
+        BgManage,
+        APManage
     }
 
     [Tooltip("초기화 해야 할 스크립트를 지닌 게임오브젝트")]

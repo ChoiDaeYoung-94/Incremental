@@ -3,6 +3,11 @@ using UnityEngine;
 public class Define : MonoBehaviour
 {
     /// <summary>
+    /// Pool에서 가져온 객체 기본으로 담아두는 go.name
+    /// </summary>
+    public static string _activePool = "ActivePool";
+
+    /// <summary>
     /// 사용하는 배경 이름
     /// </summary>
     public enum BgName

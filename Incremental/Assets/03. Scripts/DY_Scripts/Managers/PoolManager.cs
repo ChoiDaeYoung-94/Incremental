@@ -27,14 +27,13 @@ public class PoolManager
         /// -> Pool아래에 생성할 오브젝트의 Root 생성 후 create
         /// </summary>
         /// <param name="go"></param>
-        /// <param name="go_name"></param>
         /// <param name="count"></param>
-        public void Init(GameObject go, string go_name, int count)
+        public void Init(GameObject go, int count)
         {
             GO_poolTarget = go;
 
             Root = new GameObject().transform;
-            Root.name = $"{go_name}";
+            Root.name = $"{go.name}";
 
             // count만큼 pool로
             for (int i = -1; ++i < count;)
@@ -93,10 +92,10 @@ public class PoolManager
             {
                 Transform tr = null;
 
-                if (GameObject.Find("ActivePool") == null)
-                    tr = new GameObject { name = "ActivePool" }.transform;
+                if (GameObject.Find(Define._activePool) == null)
+                    tr = new GameObject { name = Define._activePool }.transform;
                 else
-                    tr = GameObject.Find("ActivePool").transform;
+                    tr = GameObject.Find(Define._activePool).transform;
 
                 poolObj.transform.parent = tr;
             }
@@ -126,22 +125,21 @@ public class PoolManager
         }
 
         for (int i = -1; ++i < Managers.Instance._go_poolMonsters.Length;)
-            CreatePool(Managers.Instance._go_poolMonsters[i], Managers.Instance._go_poolMonsters[i].name);
+            CreatePool(Managers.Instance._go_poolMonsters[i]);
     }
 
     /// <summary>
     /// Pool 생성 (기본 5개 씩)
     /// </summary>
     /// <param name="go"></param>
-    /// <param name="go_name"></param>
     /// <param name="count"></param>
-    public void CreatePool(GameObject go, string go_name, int count = 5)
+    public void CreatePool(GameObject go, int count = 5)
     {
         Pool pool = new Pool();
-        pool.Init(go, go_name, count);
+        pool.Init(go, count);
         pool.Root.parent = _root;
 
-        _dic_pool.Add(go_name, pool);
+        _dic_pool.Add(go.name, pool);
     }
 
     /// <summary>
