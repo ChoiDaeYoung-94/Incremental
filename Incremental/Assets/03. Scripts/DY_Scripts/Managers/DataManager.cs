@@ -9,6 +9,9 @@ public class DataManager
     [Tooltip("Dictionary<string, object> - 몬스터 정보 데이터")]
     public Dictionary<string, object> _dic_monsters = null;
 
+    [Header("--- 임시용 ---")]
+    public int _ply_level = 10;
+
     /// <summary>
     /// Managers - Awake() -> Init()
     /// 필요한 데이터 미리 받아 둠
