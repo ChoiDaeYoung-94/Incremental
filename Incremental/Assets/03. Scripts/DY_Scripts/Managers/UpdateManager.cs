@@ -4,7 +4,7 @@ using UnityEngine;
 public class UpdateManager
 {
     /// <summary>
-    /// Managers - Update에 돌릴 메서드 등록 위함
+    /// Managers - Update에 돌릴 메서드 등록(UI Contents)
     /// </summary>
     public event Action _update = null;
 
@@ -14,14 +14,22 @@ public class UpdateManager
     public event Action _updateBgScroll = null;
 
     /// <summary>
+    /// Managers - Update에 돌릴 메서드 등록(Monsters)
+    /// </summary>
+    public event Action _updateMonsters = null;
+
+    /// <summary>
     /// Managers - Update()
     /// </summary>
     public void OnUpdate()
     {
+        if (_update != null)
+            _update.Invoke();
+
         if (!Managers.GameM.isBattle)
         {
-            if (_update != null)
-                _update.Invoke();
+            if (_updateMonsters != null)
+                _updateMonsters.Invoke();
 
             if (_updateBgScroll != null)
                 _updateBgScroll.Invoke();
@@ -32,5 +40,6 @@ public class UpdateManager
     {
         _update = null;
         _updateBgScroll = null;
+        _updateMonsters = null;
     }
 }

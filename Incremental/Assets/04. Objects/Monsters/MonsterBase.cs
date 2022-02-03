@@ -15,6 +15,8 @@ public abstract class MonsterBase : MonoBehaviour
     protected int _org_hp = 0;
     [SerializeField, Tooltip("몬스터 now 체력")]
     protected int _hp = 0;
+    [SerializeField, Tooltip("몬스터 original position")]
+    protected Vector3 _position = Vector3.zero;
 
     /// <summary>
     /// 몬스터 정보 DataM에서 받고 초기화
@@ -27,6 +29,8 @@ public abstract class MonsterBase : MonoBehaviour
             DebugError.Parse("MonsterBase", _monster.ToString() + " - Hp");
         else
             _org_hp = _hp;
+
+        _position = transform.position;
     }
 
     public abstract void Clear();

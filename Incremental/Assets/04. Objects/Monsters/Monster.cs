@@ -16,8 +16,15 @@ public class Monster : MonsterBase
 
     private void OnEnable()
     {
-        Managers.UpdateM._update -= Move;
-        Managers.UpdateM._update += Move;
+        SetCreate();
+    }
+
+    private void SetCreate()
+    {
+        Managers.UpdateM._updateMonsters -= Move;
+        Managers.UpdateM._updateMonsters += Move;
+
+        Managers.GameM.PlusMonster();
     }
 
     private void OnDisable()
@@ -28,9 +35,13 @@ public class Monster : MonsterBase
     public override void Clear()
     {
         if (Managers.Instance != null)
-            Managers.UpdateM._update -= Move;
+        {
+            Managers.UpdateM._updateMonsters -= Move;
+            Managers.GameM.MinusMonster();
+        }
 
         _hp = _org_hp;
+        transform.position = _position;
     }
 
     #region Functions

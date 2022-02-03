@@ -2,15 +2,14 @@
 using UnityEditor;
 #endif
 
+using System;
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class APManage : MonoBehaviour
 {
-    [SerializeField, Header("--- 참고용 ---")]
-    int _monsterCount = 0;
-
     public void Init()
     {
         StartCoroutine(MonsterSettings());
@@ -21,10 +20,12 @@ public class APManage : MonoBehaviour
     {
         while(true)
         {
-            if (_monsterCount <= 0)
+            if (Managers.GameM.CheckMonsterAmount())
             {
                 CreateMonters();
             }
+
+            yield return null;
         }
     }
 
@@ -32,8 +33,9 @@ public class APManage : MonoBehaviour
     {
         // TODO : 플레이어의 레벨에 따라 생성하는 규칙을 정해야 함 + 상황에 따라 몬스터 1~3까지 랜덤 돌리는 것 까지....
 
-        Managers.PoolM.PopFromPool(Define.Monsters.Monster_1.ToString());
-        _monsterCount++;
+        int tempRandom = UnityEngine.Random.Range(1, 4);
+        
+        Managers.PoolM.PopFromPool(Enum.GetValues(typeof(Define.Monsters)).GetValue(tempRandom).ToString());
     }
     #endregion
 
