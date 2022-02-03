@@ -37,6 +37,7 @@ public class Monster : MonsterBase
         if (Managers.Instance != null)
         {
             Managers.UpdateM._updateMonsters -= Move;
+            Managers.GameM.EndBattle();
             Managers.GameM.MinusMonster();
         }
 

@@ -26,7 +26,7 @@ public class UpdateManager
         if (_update != null)
             _update.Invoke();
 
-        if (!Managers.GameM.isBattle)
+        if (!Managers.GameM.CheckBattle())
         {
             if (_updateMonsters != null)
                 _updateMonsters.Invoke();
