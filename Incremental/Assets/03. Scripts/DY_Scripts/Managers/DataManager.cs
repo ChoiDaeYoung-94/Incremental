@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DataManager
 {
-    [Header("--- 참고용 ---")]
+    [Header("--- 접근 가능 데이터 ---")]
     [Tooltip("Dictionary<string, object> - 몬스터 정보 데이터")]
     public Dictionary<string, object> _dic_monsters = null;
 

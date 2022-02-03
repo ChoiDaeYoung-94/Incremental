@@ -2,10 +2,6 @@
 using UnityEditor;
 #endif
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Monster : MonsterBase
 {
     private void Awake()
@@ -18,10 +14,31 @@ public class Monster : MonsterBase
         base.Init();
     }
 
+    private void OnEnable()
+    {
+        Managers.UpdateM._update -= Move;
+        Managers.UpdateM._update += Move;
+    }
+
+    private void OnDisable()
+    {
+        Clear();
+    }
+
     public override void Clear()
     {
+        if (Managers.Instance != null)
+            Managers.UpdateM._update -= Move;
 
+        _hp = _org_hp;
     }
+
+    #region Functions
+    public void Move()
+    {
+        transform.Translate(UnityEngine.Vector2.left * UnityEngine.Time.deltaTime * _speed);
+    }
+    #endregion
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(Monster))]

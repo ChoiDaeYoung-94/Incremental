@@ -16,6 +16,10 @@ public class Managers : MonoBehaviour
     DataManager _dataM = new DataManager();
     public static DataManager DataM { get { return instance._dataM; } }
 
+    // GM의 경우 바로 보면서 작업하는게 편할 듯 
+    [SerializeField] GameManager _gameM = null;
+    public static GameManager GameM { get { return instance._gameM; } }
+
     PoolManager _poolM = new PoolManager();
     public static PoolManager PoolM { get { return instance._poolM; } }
 
