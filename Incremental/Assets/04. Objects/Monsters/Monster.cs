@@ -50,6 +50,17 @@ public class Monster : MonsterBase
     {
         transform.Translate(UnityEngine.Vector2.left * UnityEngine.Time.deltaTime * _speed);
     }
+
+    public void Hit(int damage)
+    {
+        _hp -= damage;
+
+        if (_hp <= 0)
+        {
+            _hp = 0;
+            Managers.PoolM.PushToPool(gameObject);
+        }
+    }
     #endregion
 
 #if UNITY_EDITOR
