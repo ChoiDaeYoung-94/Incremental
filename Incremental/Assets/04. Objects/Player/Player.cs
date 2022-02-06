@@ -36,8 +36,26 @@ public class Player : MonoBehaviour
     Animator _playerAni = null;
 
     [Header("--- 참고용 ---")]
+    [SerializeField, Tooltip("플레이어 레벨")]
+    int _level = 0;
+    [SerializeField, Tooltip("플레이어 공격력")]
+    int _power = 0;
+    [SerializeField, Tooltip("플레이어 공격 속도")]
+    float _attackSpeed = 0;
     [SerializeField, Tooltip("공격 대상 몬스터 script")]
     Monster _curMonster = null;
+
+    public void Init()
+    {
+        _plyState = PlayerState.Run;
+
+        // 임시
+        _level = Managers.DataM._ply_level;
+        _power = Managers.DataM._ply_power;
+        _attackSpeed = Managers.DataM._ply_attackSpeed;
+
+        _playerAni.SetFloat("AttackSpeed", _attackSpeed);
+    }
 
     private void Update()
     {

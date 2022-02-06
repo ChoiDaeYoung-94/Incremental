@@ -13,6 +13,7 @@ public class Initialize_Game : MonoBehaviour
     /// </summary>
     enum Scripts
     {
+        Player,
         BgManage,
         APManage
     }

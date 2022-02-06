@@ -12,6 +12,7 @@ public class DataManager
     [Header("--- 임시용 ---")]
     public int _ply_level = 10;
     public int _ply_power = 30;
+    public float _ply_attackSpeed = 0.5f;
 
     /// <summary>
     /// Managers - Awake() -> Init()
