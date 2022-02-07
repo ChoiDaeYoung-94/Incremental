@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class MonsterBase : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public abstract class MonsterBase : MonoBehaviour
     Define.Monsters _monster = Define.Monsters.Base;
     [SerializeField, Tooltip("이동 속도 - 다 통일")]
     protected float _speed = 0.6f;
+
+    [Header("--- 미리 가지고 있어야 할 data ---")]
+    [SerializeField, Tooltip("HP표기 위한 slider")]
+    protected Slider _sld_hp = null;
 
     [Header("--- 참고용 ---")]
     [SerializeField, Tooltip("몬스터 original 체력")]
@@ -28,7 +33,9 @@ public abstract class MonsterBase : MonoBehaviour
         if (!int.TryParse(cur_monster["Hp"].ToString(), out _hp))
             DebugError.Parse("MonsterBase", _monster.ToString() + " - Hp");
         else
-            _org_hp = _hp;
+        {
+            _sld_hp.value = _sld_hp.maxValue = _org_hp = _hp;
+        }
 
         _position = transform.position;
     }

@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
             switch (_plyState)
             {
                 case PlayerState.Run:
-                    _playerAni.CrossFade("Run", 0.1f);
+                    _playerAni.CrossFade("Run", 0.5f);
                     break;
                 case PlayerState.Attack:
                     _playerAni.CrossFade("Attack", 0.1f);

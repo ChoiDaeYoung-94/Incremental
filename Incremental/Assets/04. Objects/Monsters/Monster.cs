@@ -41,7 +41,7 @@ public class Monster : MonsterBase
             Managers.GameM.MinusMonster();
         }
 
-        _hp = _org_hp;
+        _sld_hp.value = _hp = _org_hp;
         transform.position = _position;
     }
 
@@ -54,10 +54,12 @@ public class Monster : MonsterBase
     public void Hit(int damage)
     {
         _hp -= damage;
+        _sld_hp.value = _hp;
 
         if (_hp <= 0)
         {
             _hp = 0;
+            _sld_hp.value = _hp;
             Managers.PoolM.PushToPool(gameObject);
         }
     }
