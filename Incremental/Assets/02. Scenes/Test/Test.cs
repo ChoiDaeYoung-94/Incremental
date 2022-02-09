@@ -6,7 +6,26 @@ using MiniJSON;
 
 public class Test : MonoBehaviour
 {
+    public GameObject TestObj;
+
     void Start()
+    {
+
+    }
+
+    private void Update()
+    {
+
+    }
+
+    void TransformTest()
+    {
+        Vector2 test = Camera.main.WorldToScreenPoint(transform.position);
+        TestObj.GetComponent<RectTransform>().anchoredPosition = test;
+        Debug.Log(test);
+    }
+
+    void JsonTest()
     {
         Debug.Log(Application.dataPath);
         var jsonString = "{ \"array\": [1.44,2,3], " +

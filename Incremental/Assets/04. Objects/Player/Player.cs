@@ -69,6 +69,7 @@ public class Player : MonoBehaviour
                 break;
         }
     }
+
     #region Functions
     /// <summary>
     /// Event in player ani(Attack)

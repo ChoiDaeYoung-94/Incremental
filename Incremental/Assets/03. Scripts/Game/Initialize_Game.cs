@@ -38,7 +38,7 @@ public class Initialize_Game : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(Initialize))]
+    [CustomEditor(typeof(Initialize_Game))]
     public class customEditor : Editor
     {
         public override void OnInspectorGUI()

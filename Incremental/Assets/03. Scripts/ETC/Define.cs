@@ -12,6 +12,7 @@ public class Define : MonoBehaviour
     /// </summary>
     public enum BgName
     {
+        Base,
         BG_01,
         BG_02,
         BG_03,
@@ -27,5 +28,14 @@ public class Define : MonoBehaviour
         Monster_1,
         Monster_2,
         Monster_3
+    }
+
+    /// <summary>
+    /// 몬스터에게 드롭되는 아이템
+    /// </summary>
+    public enum DropItems
+    {
+        Base,
+        Gold
     }
 }
