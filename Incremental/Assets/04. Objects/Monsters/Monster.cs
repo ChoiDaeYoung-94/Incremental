@@ -60,7 +60,20 @@ public class Monster : MonsterBase
         {
             _hp = 0;
             _sld_hp.value = _hp;
+            DropItem();
             Managers.PoolM.PushToPool(gameObject);
+        }
+    }
+
+    void DropItem()
+    {
+        // Gold는 80% -> 추후 경험치는 100%
+        if (UnityEngine.Random.Range(1, 11) > 2)
+        {
+            UnityEngine.GameObject go_gold = Managers.PoolM.PopFromPool(Define.DropItems.Gold.ToString());
+            Goods gold = go_gold.GetComponent<Goods>();
+            gold.SettingBase(transform);
+            gold.Init();
         }
     }
     #endregion

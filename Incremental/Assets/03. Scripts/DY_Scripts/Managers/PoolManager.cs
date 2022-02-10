@@ -77,7 +77,7 @@ public class PoolManager
         /// </summary>
         /// <param name="parent"></param>
         /// <returns></returns>
-        public void PopFromPool(Transform parent)
+        public GameObject PopFromPool(Transform parent)
         {
             PoolObject poolObj;
 
@@ -101,6 +101,8 @@ public class PoolManager
             }
             else
                 poolObj.transform.parent = parent;
+
+            return poolObj.gameObject;
         }
     }
     #endregion
@@ -169,15 +171,15 @@ public class PoolManager
     /// </summary>
     /// <param name="go_name"></param>
     /// <param name="parent"></param>
-    public void PopFromPool(string go_name, Transform parent = null)
+    public GameObject PopFromPool(string go_name, Transform parent = null)
     {
         if (!_dic_pool.ContainsKey(go_name))
         {
             DebugError.Contain("PoolManager", $"{go_name} in _dic_pool");
-            return;
+            return null;
         }
 
-        _dic_pool[go_name].PopFromPool(parent);
+         return _dic_pool[go_name].PopFromPool(parent);
     }
 
     /// <summary>
