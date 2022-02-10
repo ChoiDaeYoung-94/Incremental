@@ -61,6 +61,8 @@ public class Monster : MonsterBase
             _hp = 0;
             _sld_hp.value = _hp;
             DropItem();
+            DropItem();
+            DropItem();
             Managers.PoolM.PushToPool(gameObject);
         }
     }

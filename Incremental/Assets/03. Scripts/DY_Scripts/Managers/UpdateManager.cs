@@ -19,6 +19,11 @@ public class UpdateManager
     public event Action _updateMonsters = null;
 
     /// <summary>
+    /// Managers - Update에 돌릴 메서드 등록(Monsters)
+    /// </summary>
+    public event Action _updateDropItems = null;
+
+    /// <summary>
     /// Managers - Update()
     /// </summary>
     public void OnUpdate()
@@ -30,6 +35,9 @@ public class UpdateManager
         {
             if (_updateMonsters != null)
                 _updateMonsters.Invoke();
+
+            if (_updateDropItems != null)
+                _updateDropItems.Invoke();
 
             if (_updateBgScroll != null)
                 _updateBgScroll.Invoke();

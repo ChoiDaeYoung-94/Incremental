@@ -92,9 +92,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8256571425876868435}
   - component: {fileID: 8380583408277359815}
+  - component: {fileID: 6583788585209569716}
   m_Layer: 0
   m_Name: Gold
-  m_TagString: Untagged
+  m_TagString: DropItem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126,11 +127,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f260201d08da4448b5626a1c2e5ff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _item: 0
+  _item: 1
+  _speed: 0.6
   _tr_start: {fileID: 0}
+  _pos_x: 0
   _pos_y: 0
   _vec3_end: {x: 0, y: 0, z: 0}
   _jumpPower: 0
   _jumpCount: 0
   _jumpDuration: 0
+  _vec3_original: {x: 100, y: 0, z: 0}
   _pos_y_range: 0.05
+--- !u!58 &6583788585209569716
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8256571425876868436}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.47, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.12

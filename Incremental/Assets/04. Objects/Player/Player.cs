@@ -108,5 +108,10 @@ public class Player : MonoBehaviour
             Managers.GameM.StartBattle();
             _curMonster = col.GetComponent<Monster>();
         }
+
+        if (col.CompareTag("DropItem"))
+        {
+            col.GetComponent<Goods>().GetItems();
+        }
     }
 }
