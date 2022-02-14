@@ -126,16 +126,16 @@ public class PoolManager
             Object.DontDestroyOnLoad(_root);
         }
 
-        for (int i = -1; ++i < Managers.Instance._go_poolMonsters.Length;)
-            CreatePool(Managers.Instance._go_poolMonsters[i]);
+        for (int i = -1; ++i < Managers.Instance._go_poolObjects.Length;)
+            CreatePool(Managers.Instance._go_poolObjects[i]);
     }
 
     /// <summary>
-    /// Pool 생성 (기본 5개 씩)
+    /// Pool 생성 (기본 10개 씩)
     /// </summary>
     /// <param name="go"></param>
     /// <param name="count"></param>
-    public void CreatePool(GameObject go, int count = 5)
+    public void CreatePool(GameObject go, int count = 10)
     {
         Pool pool = new Pool();
         pool.Init(go, count);

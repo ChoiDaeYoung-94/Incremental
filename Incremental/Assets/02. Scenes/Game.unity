@@ -636,7 +636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameM: {fileID: 328942910}
-  _go_poolMonsters:
+  _go_poolObjects:
   - {fileID: 7922447019196375230, guid: d0d7ceeb6e708f14c9829590a083c9dd, type: 3}
   - {fileID: 189855943031746699, guid: 63c23ab47ade7854d994eda9aa37efc3, type: 3}
   - {fileID: 2648109434431253980, guid: 4bd770405581cdd4cbcec094adb5ca78, type: 3}

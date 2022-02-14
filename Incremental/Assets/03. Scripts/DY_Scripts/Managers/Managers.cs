@@ -31,7 +31,7 @@ public class Managers : MonoBehaviour
 
     [Header("--- 미리 가지고 있어야 할 data ---")]
     [Tooltip("Pool에 사용할 GameObjects")]
-    public GameObject[] _go_poolMonsters = null;
+    public GameObject[] _go_poolObjects = null;
 
     private void Awake()
     {
