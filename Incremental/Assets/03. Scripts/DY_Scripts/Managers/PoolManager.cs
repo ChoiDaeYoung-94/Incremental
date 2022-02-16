@@ -36,12 +36,12 @@ public class PoolManager
         public void Init(GameObject go, int count)
         {
             GO_poolTarget = go;
-
-            Root = new GameObject().transform;
-            Root.name = $"{go.name}";
-
+            
+            GameObject go_root = new GameObject { name = go.name }.gameObject;
             if (!isGO)
-                Root.gameObject.AddComponent<Canvas>();
+                go_root.AddComponent<Canvas>();
+
+            Root = go_root.transform;
 
             // count만큼 pool로
             for (int i = -1; ++i < count;)
@@ -55,9 +55,8 @@ public class PoolManager
         /// <returns></returns>
         PoolObject Create()
         {
-            GameObject go = Object.Instantiate(GO_poolTarget, Root);
+            GameObject go = Object.Instantiate(GO_poolTarget);
             go.name = GO_poolTarget.name;
-            go.SetActive(false);
 
             PoolObject poolObj = go.GetComponent_<PoolObject>();
 
@@ -73,6 +72,9 @@ public class PoolManager
             // 혹시 모를...
             if (poolObj == null)
                 return;
+
+            poolObj.transform.SetParent(Root);
+            poolObj.gameObject.SetActive(false);
 
             _Stack_pool.Push(poolObj);
         }
@@ -103,10 +105,10 @@ public class PoolManager
                 else
                     tr = GameObject.Find(Define._activePool).transform;
 
-                poolObj.transform.parent = tr;
+                poolObj.transform.SetParent(tr);
             }
             else
-                poolObj.transform.parent = parent;
+                poolObj.transform.SetParent(parent);
 
             return poolObj.gameObject;
         }
@@ -144,8 +146,8 @@ public class PoolManager
         for (int i = -1; ++i < Managers.Instance._go_poolGOs.Length;)
             CreatePool(Managers.Instance._go_poolGOs[i], isGO: true, count: 10);
 
-        //for (int i = -1; ++i < Managers.Instance._go_poolUIs.Length;)
-        //    CreatePool(Managers.Instance._go_poolUIs[i], isGO: false, count: 50);
+        for (int i = -1; ++i < Managers.Instance._go_poolUIs.Length;)
+            CreatePool(Managers.Instance._go_poolUIs[i], isGO: false, count: 50);
     }
 
     /// <summary>
@@ -159,7 +161,8 @@ public class PoolManager
         pool.isGO = isGO;
         pool.Init(go, count);
 
-        pool.Root.parent = isGO ? _root_GO : _root_UI;
+        Transform tr = isGO ? _root_GO : _root_UI;
+        pool.Root.SetParent(tr);
 
         _dic_pool.Add(go.name, pool);
     }
