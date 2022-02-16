@@ -38,4 +38,15 @@ public class Define : MonoBehaviour
         Base,
         Gold
     }
+
+    /// <summary>
+    /// 지금 당장 분류하기 어려운 부분
+    /// 추후 분류
+    /// * 현재는 Pool에서 TMP_Damage만을 위해 사용
+    /// </summary>
+    public enum ETC
+    {
+        Base,
+        TMP_Damage
+    }
 }

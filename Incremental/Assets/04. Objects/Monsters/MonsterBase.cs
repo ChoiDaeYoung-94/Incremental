@@ -12,6 +12,8 @@ public abstract class MonsterBase : MonoBehaviour
     protected float _speed = 0.6f;
 
     [Header("--- 미리 가지고 있어야 할 data ---")]
+    [SerializeField, Tooltip("대미지 표기 위한 자기 자신의 Canvas의 Transform")]
+    protected Transform _tr_canvas = null;
     [SerializeField, Tooltip("HP표기 위한 slider")]
     protected Slider _sld_hp = null;
 

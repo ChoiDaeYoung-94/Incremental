@@ -2,6 +2,8 @@
 using UnityEditor;
 #endif
 
+using System;
+
 public class Monster : MonsterBase
 {
     private void Awake()
@@ -55,6 +57,10 @@ public class Monster : MonsterBase
     {
         _hp -= damage;
         _sld_hp.value = _hp;
+
+        UnityEngine.GameObject go_damage = Managers.PoolM.PopFromPool(Define.ETC.TMP_Damage.ToString());
+        go_damage.transform.SetParent(_tr_canvas);
+        go_damage.GetComponent<TMP_Damage>().Init(damage);
 
         if (_hp <= 0)
         {

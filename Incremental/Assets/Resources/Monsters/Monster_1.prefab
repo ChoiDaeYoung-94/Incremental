@@ -49,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _monster: 1
   _speed: 0.6
+  _tr_canvas: {fileID: 882323014615710242}
   _sld_hp: {fileID: 2161662244795626487}
   _org_hp: 0
   _hp: 0
