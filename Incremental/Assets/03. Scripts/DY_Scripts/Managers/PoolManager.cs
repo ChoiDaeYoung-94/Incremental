@@ -18,6 +18,11 @@ public class PoolManager
         public Transform Root { get; set; }
 
         /// <summary>
+        /// GO인지 UI인지 구별
+        /// </summary>
+        public bool isGO = false;
+
+        /// <summary>
         /// 생성된 PoolObject Stack으로 관리, 메서드로 Push, Pop 관리
         /// </summary>
         Stack<PoolObject> _Stack_pool = new Stack<PoolObject>();
@@ -35,6 +40,9 @@ public class PoolManager
             Root = new GameObject().transform;
             Root.name = $"{go.name}";
 
+            if (!isGO)
+                Root.gameObject.AddComponent<Canvas>();
+
             // count만큼 pool로
             for (int i = -1; ++i < count;)
                 PushToPool(Create());
@@ -47,8 +55,9 @@ public class PoolManager
         /// <returns></returns>
         PoolObject Create()
         {
-            GameObject go = Object.Instantiate(GO_poolTarget);
+            GameObject go = Object.Instantiate(GO_poolTarget, Root);
             go.name = GO_poolTarget.name;
+            go.SetActive(false);
 
             PoolObject poolObj = go.GetComponent_<PoolObject>();
 
@@ -64,9 +73,6 @@ public class PoolManager
             // 혹시 모를...
             if (poolObj == null)
                 return;
-
-            poolObj.transform.parent = Root;
-            poolObj.gameObject.SetActive(false);
 
             _Stack_pool.Push(poolObj);
         }
@@ -110,8 +116,10 @@ public class PoolManager
     [Tooltip("Pool 관리 할 Dictionary - _root아래의 생성할 poolGO.name, Pool로 관리")]
     public Dictionary<string, Pool> _dic_pool = new Dictionary<string, Pool>();
 
-    [Tooltip("Pool의 root Transform")]
-    public Transform _root;
+    [Tooltip("GO Pool의 root Transform")]
+    public Transform _root_GO;
+    [Tooltip("UI Pool의 root Transform")]
+    public Transform _root_UI;
 
     /// <summary>
     /// Managers - Awake() -> Init()
@@ -119,15 +127,25 @@ public class PoolManager
     /// </summary>
     public void Init()
     {
-        // root 생성
-        if (_root == null)
+        // GO root 생성
+        if (_root_GO == null)
         {
-            _root = new GameObject { name = "Pool" }.transform;
-            Object.DontDestroyOnLoad(_root);
+            _root_GO = new GameObject { name = "Pool_GO" }.transform;
+            Object.DontDestroyOnLoad(_root_GO);
         }
 
-        for (int i = -1; ++i < Managers.Instance._go_poolObjects.Length;)
-            CreatePool(Managers.Instance._go_poolObjects[i]);
+        // UI root 생성
+        if (_root_UI == null)
+        {
+            _root_UI = new GameObject { name = "Pool_UI" }.transform;
+            Object.DontDestroyOnLoad(_root_UI);
+        }
+
+        for (int i = -1; ++i < Managers.Instance._go_poolGOs.Length;)
+            CreatePool(Managers.Instance._go_poolGOs[i], isGO: true, count: 10);
+
+        //for (int i = -1; ++i < Managers.Instance._go_poolUIs.Length;)
+        //    CreatePool(Managers.Instance._go_poolUIs[i], isGO: false, count: 50);
     }
 
     /// <summary>
@@ -135,11 +153,13 @@ public class PoolManager
     /// </summary>
     /// <param name="go"></param>
     /// <param name="count"></param>
-    public void CreatePool(GameObject go, int count = 10)
+    public void CreatePool(GameObject go, bool isGO = true, int count = 10)
     {
         Pool pool = new Pool();
+        pool.isGO = isGO;
         pool.Init(go, count);
-        pool.Root.parent = _root;
+
+        pool.Root.parent = isGO ? _root_GO : _root_UI;
 
         _dic_pool.Add(go.name, pool);
     }
@@ -179,7 +199,7 @@ public class PoolManager
             return null;
         }
 
-         return _dic_pool[go_name].PopFromPool(parent);
+        return _dic_pool[go_name].PopFromPool(parent);
     }
 
     /// <summary>
@@ -188,7 +208,7 @@ public class PoolManager
     /// </summary>
     public void Clear()
     {
-        foreach (Transform child in _root)
+        foreach (Transform child in _root_GO)
             GameObject.Destroy(child.gameObject);
 
         _dic_pool.Clear();

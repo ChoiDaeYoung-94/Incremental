@@ -30,8 +30,10 @@ public class Managers : MonoBehaviour
     public static UpdateManager UpdateM { get { return instance._updateM; } }
 
     [Header("--- 미리 가지고 있어야 할 data ---")]
-    [Tooltip("Pool에 사용할 GameObjects")]
-    public GameObject[] _go_poolObjects = null;
+    [Tooltip("Pool에 사용할 GameObject")]
+    public GameObject[] _go_poolGOs = null;
+    [Tooltip("Pool에 사용할 UI")]
+    public GameObject[] _go_poolUIs = null;
 
     private void Awake()
     {
