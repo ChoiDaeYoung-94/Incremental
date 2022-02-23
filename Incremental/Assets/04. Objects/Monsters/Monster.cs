@@ -39,7 +39,6 @@ public class Monster : MonsterBase
         if (Managers.Instance != null)
         {
             Managers.UpdateM._updateMonsters -= Move;
-            Managers.GameM.EndBattle();
             Managers.GameM.MinusMonster();
         }
 
@@ -60,14 +59,15 @@ public class Monster : MonsterBase
 
         UnityEngine.GameObject go_damage = Managers.PoolM.PopFromPool(Define.ETC.TMP_Damage.ToString());
         go_damage.transform.SetParent(_tr_canvas);
-        go_damage.GetComponent<TMP_Damage>().Init(damage);
+        go_damage.GetComponent<TMP_Damage>().Init(damage, _hp, gameObject);
 
         if (_hp <= 0)
         {
+            Managers.GameM.EndBattle();
+
             _hp = 0;
             _sld_hp.value = _hp;
             DropItem();
-            Managers.PoolM.PushToPool(gameObject);
         }
     }
 

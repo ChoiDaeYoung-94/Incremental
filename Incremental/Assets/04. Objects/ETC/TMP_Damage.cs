@@ -31,7 +31,7 @@ public class TMP_Damage : MonoBehaviour
 
     Sequence _effect = null;
 
-    public void Init(int damage)
+    public void Init(int damage, int curHP, GameObject monster)
     {
         _TMP_this.text = damage.ToString();
 
@@ -44,8 +44,16 @@ public class TMP_Damage : MonoBehaviour
             _effect.Append(transform.DOScale(_vec3_scale_plus, 0.2f));
             _effect.Append(transform.DOScale(_vec3_scale_end, 0.2f));
             _effect.Append(_rtr_this.DOAnchorPosY(_posY_start + _posY_plus, 0.3f));
-            _effect.Join(_TMP_this.DOFade(0f, 0.3f)).OnComplete(() => Managers.PoolM.PushToPool(gameObject));
+            _effect.Join(_TMP_this.DOFade(0f, 0.3f)).OnComplete(() => OnCompleteTween(curHP, monster));
         }
+    }
+
+    void OnCompleteTween(int curHP, GameObject monster)
+    {
+        if (curHP <= 0)
+            Managers.PoolM.PushToPool(monster);
+
+        Managers.PoolM.PushToPool(gameObject);
     }
 
     private void OnDisable()
