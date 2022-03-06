@@ -62,8 +62,10 @@ MonoBehaviour:
   _rtr_this: {fileID: 8012766747485909327}
   _TMP_this: {fileID: 8012766747485909326}
   _posY_start: 0.35
-  _posY_end: 0.15
-  _vec3_scale: {x: 0.1, y: 0.1, z: 0.1}
+  _posY_plus: 0.15
+  _vec3_scale_start: {x: 0.01, y: 0.01, z: 0.01}
+  _vec3_scale_plus: {x: 0.15, y: 0.15, z: 0.15}
+  _vec3_scale_end: {x: 0.1, y: 0.1, z: 0.1}
 --- !u!114 &5715148919974353272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,7 +75,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8012766747485909324}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfefacc104821f949a95a8b8c0d39e35, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ed368f0947f09048a711c1521156ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &8012766747485909326

@@ -59,6 +59,7 @@ public class Managers : MonoBehaviour
 
             DataM.Init();
             PoolM.Init();
+            PopupM.Init();
         }
         else
             Destroy(gameObject);
@@ -82,6 +83,7 @@ public class Managers : MonoBehaviour
     {
         DataM.Init();
         PoolM.Init();
+        PopupM.Init();
     }
 
     /// <summary>

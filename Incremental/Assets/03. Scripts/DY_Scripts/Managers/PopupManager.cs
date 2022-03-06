@@ -31,7 +31,6 @@ public class PopupManager
 
     void Onupdate()
     {
-        //Debug.Log(isException + " : check");
         if (Application.platform == RuntimePlatform.Android)
         {
             if (Input.GetKeyDown(KeyCode.Escape))

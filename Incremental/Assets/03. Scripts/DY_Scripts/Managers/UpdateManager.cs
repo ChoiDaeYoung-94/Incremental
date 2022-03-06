@@ -49,5 +49,6 @@ public class UpdateManager
         _update = null;
         _updateBgScroll = null;
         _updateMonsters = null;
+        _updateDropItems = null;
     }
 }

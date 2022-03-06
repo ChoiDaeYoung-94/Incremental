@@ -14,6 +14,7 @@ public class Initialize_Game : MonoBehaviour
     enum Scripts
     {
         Player,
+        UIManage,
         BgManage,
         APManage
     }
