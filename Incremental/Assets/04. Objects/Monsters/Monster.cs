@@ -57,7 +57,7 @@ public class Monster : MonsterBase
         _hp -= damage;
         _sld_hp.value = _hp;
 
-        UnityEngine.GameObject go_damage = Managers.PoolM.PopFromPool(Define.ETC.TMP_Damage.ToString());
+        UnityEngine.GameObject go_damage = Managers.PoolM.PopFromPool(DY.Define.ETC.TMP_Damage.ToString());
         go_damage.transform.SetParent(_tr_canvas);
         go_damage.GetComponent<TMP_Damage>().Init(damage, _hp, gameObject);
 
@@ -76,7 +76,7 @@ public class Monster : MonsterBase
         // Gold는 80% -> 추후 경험치는 100%
         if (UnityEngine.Random.Range(1, 11) > 2)
         {
-            UnityEngine.GameObject go_gold = Managers.PoolM.PopFromPool(Define.DropItems.Gold.ToString());
+            UnityEngine.GameObject go_gold = Managers.PoolM.PopFromPool(DY.Define.DropItems.Gold.ToString());
             Goods gold = go_gold.GetComponent<Goods>();
             gold.SettingBase(transform);
             gold.Init();

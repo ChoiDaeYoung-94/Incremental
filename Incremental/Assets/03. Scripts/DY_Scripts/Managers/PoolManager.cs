@@ -100,10 +100,10 @@ public class PoolManager
             {
                 Transform tr = null;
 
-                if (GameObject.Find(Define._activePool) == null)
-                    tr = new GameObject { name = Define._activePool }.transform;
+                if (GameObject.Find(DY.Define._activePool) == null)
+                    tr = new GameObject { name = DY.Define._activePool }.transform;
                 else
-                    tr = GameObject.Find(Define._activePool).transform;
+                    tr = GameObject.Find(DY.Define._activePool).transform;
 
                 poolObj.transform.SetParent(tr);
             }
@@ -198,7 +198,7 @@ public class PoolManager
     {
         if (!_dic_pool.ContainsKey(go_name))
         {
-            DebugError.Contain("PoolManager", $"{go_name} in _dic_pool");
+            DY.Debug.Contain("PoolManager", $"{go_name} in _dic_pool");
             return null;
         }
 

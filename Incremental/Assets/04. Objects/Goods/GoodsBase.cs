@@ -6,7 +6,7 @@ public abstract class GoodsBase : MonoBehaviour
 {
     [Header("--- 세팅 ---")]
     [SerializeField, Tooltip("어떤 아이템 인지")]
-    protected Define.DropItems _item = Define.DropItems.Base;
+    protected DY.Define.DropItems _item = DY.Define.DropItems.Base;
     [SerializeField, Tooltip("이동 속도 - 다 통일")]
     protected float _speed = 0.6f;
 
@@ -39,7 +39,7 @@ public abstract class GoodsBase : MonoBehaviour
         transform.position = _tr_start.position;
 
         // 추후 경험치 등 생기면 switch로 (아이템 크기에 따라 Y값 조절 위함)
-        if (_item == Define.DropItems.Gold)
+        if (_item == DY.Define.DropItems.Gold)
         {
             transform.position = new Vector3(transform.position.x, 0.32f, transform.position.z);
         }

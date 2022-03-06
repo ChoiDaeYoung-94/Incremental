@@ -5,7 +5,7 @@ public class ResourceManager
     public T Load<T>(string where, string path) where T : Object
     {
         if (Resources.Load<T>(path) == null)
-            DebugError.LoadWarning(where, path);
+            DY.Debug.Load(where, path);
 
         return Resources.Load<T>(path);
     }
@@ -15,7 +15,7 @@ public class ResourceManager
         GameObject go = Load<GameObject>(where, "Prefabs/" + path);
         if (go == null)
         {
-            DebugError.InstantiateWarning(where, path);
+            DY.Debug.Instantiate(where, path);
             return null;
         }
 

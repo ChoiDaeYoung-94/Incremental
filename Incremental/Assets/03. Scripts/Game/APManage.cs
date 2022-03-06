@@ -35,7 +35,7 @@ public class APManage : MonoBehaviour
 
         int tempRandom = UnityEngine.Random.Range(1, 4);
         
-        Managers.PoolM.PopFromPool(Enum.GetValues(typeof(Define.Monsters)).GetValue(tempRandom).ToString());
+        Managers.PoolM.PopFromPool(Enum.GetValues(typeof(DY.Define.Monsters)).GetValue(tempRandom).ToString());
     }
     #endregion
 

@@ -53,7 +53,7 @@ public class Goods : GoodsBase
     {
         switch (_item)
         {
-            case Define.DropItems.Gold:
+            case DY.Define.DropItems.Gold:
                 // TODO -> 골드 처리
                 UnityEngine.Debug.Log("골드 획득");
                 break;

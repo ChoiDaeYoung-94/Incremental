@@ -7,7 +7,7 @@ public abstract class MonsterBase : MonoBehaviour
 {
     [Header("--- 세팅 ---")]
     [SerializeField, Tooltip("어떤 몬스터 인지")]
-    Define.Monsters _monster = Define.Monsters.Base;
+    DY.Define.Monsters _monster = DY.Define.Monsters.Base;
     [SerializeField, Tooltip("이동 속도 - 다 통일")]
     protected float _speed = 0.6f;
 
@@ -33,7 +33,7 @@ public abstract class MonsterBase : MonoBehaviour
         Dictionary<string, object> cur_monster = Managers.DataM._dic_monsters[_monster.ToString()] as Dictionary<string, object>;
 
         if (!int.TryParse(cur_monster["Hp"].ToString(), out _hp))
-            DebugError.Parse("MonsterBase", _monster.ToString() + " - Hp");
+            DY.Debug.Parse("MonsterBase", _monster.ToString() + " - Hp");
         else
         {
             _sld_hp.value = _sld_hp.maxValue = _org_hp = _hp;

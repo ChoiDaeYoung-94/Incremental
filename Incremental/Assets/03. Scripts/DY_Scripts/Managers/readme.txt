@@ -2,9 +2,9 @@
 
 *	DataManager.cs		: Data 관리
 
-*	GameManager.cs		: Game 관리
-
 *	PoolManager.cs		: Pool 관리
+
+*	PopupManager.cs		: Popup 관리
 
 *	ResourceManager.cs	: Resources 관리
 

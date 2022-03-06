@@ -23,6 +23,9 @@ public class Managers : MonoBehaviour
     PoolManager _poolM = new PoolManager();
     public static PoolManager PoolM { get { return instance._poolM; } }
 
+    PopupManager _popupM = new PopupManager();
+    public static PopupManager PopupM { get { return instance._popupM; } }
+
     ResourceManager _resourceM = new ResourceManager();
     public static ResourceManager ResourceM { get { return instance._resourceM; } }
 
