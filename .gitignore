@@ -3,7 +3,7 @@
 [Tt]emp/
 [Bb]uild/
 [Bb]uilds/
-[Ll]ogs/
+[Ll]ogs/s
 [Uu]ser[Ss]ettings/
 .vsconfig
 Assembly-CSharp.csproj
@@ -11,4 +11,6 @@ Assembly-CSharp.csproj
 07. ETC
 PlayFabEditorExtensions/
 PlayFabSDK/
+ExternalDependencyManager/
+GooglePlayGames/
 AeDeong.keystore
