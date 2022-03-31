@@ -731,14 +731,6 @@
       <Project>{BE92940E-43F5-08CD-7056-837B938A7304}</Project>
       <Name>PlayFab</Name>
     </ProjectReference>
-    <ProjectReference Include="Google.Play.Games.Editor.csproj">
-      <Project>{6719E294-F50A-2446-7EB9-EE914E442311}</Project>
-      <Name>Google.Play.Games.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Google.Play.Games.csproj">
-      <Project>{4BA6B973-1D70-9A3D-2DE5-283323ABEF60}</Project>
-      <Name>Google.Play.Games</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
