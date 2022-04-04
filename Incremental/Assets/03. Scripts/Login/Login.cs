@@ -23,14 +23,14 @@ public class Login : MonoBehaviour
     private void Awake()
     {
 #if UNITY_ANDROID
-        _go_GameCenter.SetActive(false);
+        //_go_GameCenter.SetActive(false);
 
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
 #endif
 
 #if UNITY_IOS
-        _go_GooglePlay.SetActive(false);
+        //_go_GooglePlay.SetActive(false);
 #endif
     }
 
