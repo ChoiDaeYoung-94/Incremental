@@ -5,52 +5,109 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 using TMPro;
+
+using GooglePlayGames;
 
 using PlayFab;
 using PlayFab.ClientModels;
 
 public class Login : MonoBehaviour
 {
-    [Header("--- 세팅 ---")]
-    [SerializeField, Tooltip("TMP_Text - Email_ID")]
-    TMP_Text _IF_emailID = null;
-    [SerializeField, Tooltip("TMP_Text - Email_passward")]
-    TMP_Text _IF_emailPassward = null;
+    [Header("--- 세팅(추후 Android, IOS 둘 다 진행 시) ---")]
+    public GameObject _go_GooglePlay = null;
+    public GameObject _go_GameCenter = null;
 
-    public void LoginTest()
+    private void Awake()
     {
-        var request = new LoginWithEmailAddressRequest { Email = _IF_emailID.text, Password = _IF_emailPassward.text };
-        PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnLoginFailure);
+#if UNITY_ANDROID
+        _go_GameCenter.SetActive(false);
+
+        PlayGamesPlatform.DebugLogEnabled = true;
+        PlayGamesPlatform.Activate();
+#endif
+
+#if UNITY_IOS
+        _go_GooglePlay.SetActive(false);
+#endif
     }
 
-    public void SignUpTest()
+    private void Start()
     {
-        var request = new RegisterPlayFabUserRequest { Email = _IF_emailID.text, Password = _IF_emailPassward.text, Username = "testsss" };
-        PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnRegisterFailure);
+#if UNITY_ANDROID
+        LoginWithGoogle();
+#endif
     }
 
-    private void OnLoginSuccess(LoginResult result)
+    #region Functions
+
+    #region Login & SignUp
+    public void LoginWithGoogle()
     {
-        Debug.Log("로그인 성공");
+        if (Social.localUser.authenticated == false)
+        {
+            Social.localUser.Authenticate((bool success, string error) =>
+            {
+                if (success)
+                {
+                    Debug.Log("Success LoginWithGoogle");
+                    LoginWithPlayFab();
+                }
+                else
+                    Debug.LogWarning($"Failed LoginWithGoogle -> {error}");
+            });
+        }
     }
 
-    private void OnLoginFailure(PlayFabError error)
+    void LoginWithPlayFab()
     {
-        Debug.LogWarning("로그인 실패");
+        var request = new LoginWithEmailAddressRequest { Email = Social.localUser.userName + "@AeDeong.com", Password = Social.localUser.id };
+        PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginWithPlayFabSuccess, OnLoginWithPlayFabFailure);
     }
 
-    private void OnRegisterSuccess(RegisterPlayFabUserResult result)
+    private void OnLoginWithPlayFabSuccess(LoginResult result)
     {
-        Debug.Log("회원가입 성공");
+        Debug.Log("Success LoginWithPlayFab");
+
+        GoGame();
     }
 
-    private void OnRegisterFailure(PlayFabError error)
+    private void OnLoginWithPlayFabFailure(PlayFabError error)
     {
-        Debug.LogWarning("회원가입 실패");
+        Debug.Log("Failed LoginWithPlayFab -> SignUpWithPlayFab");
+
+        SignUpWithPlayFab();
     }
+
+    public void SignUpWithPlayFab()
+    {
+        var request = new RegisterPlayFabUserRequest { Email = Social.localUser.userName + "@AeDeong.com", Password = Social.localUser.id, Username = Social.localUser.userName };
+        PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterWithPlayFabSuccess, OnRegisterWithPlayFabFailure);
+    }
+    private void OnRegisterWithPlayFabSuccess(RegisterPlayFabUserResult result)
+    {
+        Debug.Log("Success SignUpWithPlayFab");
+
+        GoGame();
+    }
+
+    private void OnRegisterWithPlayFabFailure(PlayFabError error)
+    {
+        Debug.LogWarning($"Failed SignUpWithPlayFab -> {error}");
+    }
+    #endregion
+
+    #region ETC
+    void GoGame()
+    {
+        SceneManager.LoadScene("Game");
+        Resources.UnloadUnusedAssets();
+    }
+    #endregion
+
+    #endregion
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(Login))]
