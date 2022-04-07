@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-using TMPro;
-
+#if UNITY_ANDROID
 using GooglePlayGames;
+#endif
 
 using PlayFab;
 using PlayFab.ClientModels;
@@ -36,7 +36,9 @@ public class Login : MonoBehaviour
 
     private void Start()
     {
-#if UNITY_ANDROID
+#if UNITY_EDITOR
+        LoginWithTestAccount();
+#elif UNITY_ANDROID
         LoginWithGoogle();
 #endif
     }
@@ -44,7 +46,7 @@ public class Login : MonoBehaviour
     #region Functions
 
     #region Login & SignUp
-    public void LoginWithGoogle()
+    void LoginWithGoogle()
     {
         if (Social.localUser.authenticated == false)
         {
@@ -67,41 +69,57 @@ public class Login : MonoBehaviour
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginWithPlayFabSuccess, OnLoginWithPlayFabFailure);
     }
 
-    private void OnLoginWithPlayFabSuccess(LoginResult result)
+    void OnLoginWithPlayFabSuccess(LoginResult result)
     {
         Debug.Log("Success LoginWithPlayFab");
 
         GoGame();
     }
 
-    private void OnLoginWithPlayFabFailure(PlayFabError error)
+    void OnLoginWithPlayFabFailure(PlayFabError error)
     {
         Debug.Log("Failed LoginWithPlayFab -> SignUpWithPlayFab");
 
         SignUpWithPlayFab();
     }
 
-    public void SignUpWithPlayFab()
+    void SignUpWithPlayFab()
     {
         var request = new RegisterPlayFabUserRequest { Email = Social.localUser.userName + "@AeDeong.com", Password = Social.localUser.id, Username = Social.localUser.userName };
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterWithPlayFabSuccess, OnRegisterWithPlayFabFailure);
     }
-    private void OnRegisterWithPlayFabSuccess(RegisterPlayFabUserResult result)
+    void OnRegisterWithPlayFabSuccess(RegisterPlayFabUserResult result)
     {
         Debug.Log("Success SignUpWithPlayFab");
 
         GoGame();
     }
 
-    private void OnRegisterWithPlayFabFailure(PlayFabError error)
+    void OnRegisterWithPlayFabFailure(PlayFabError error)
     {
         Debug.LogWarning($"Failed SignUpWithPlayFab -> {error}");
+    }
+    #endregion
+
+    #region LoginWithTestAccount
+    void LoginWithTestAccount()
+    {
+        var request = new LoginWithEmailAddressRequest { Email = "Test@AeDeong.com", Password = "TestAccount" };
+        PlayFabClientAPI.LoginWithEmailAddress(request, (success) => GoGame(), (failed) => SignUpWithTestAccount());
+    }
+
+    void SignUpWithTestAccount()
+    {
+        var request = new RegisterPlayFabUserRequest { Email = "Test@AeDeong.com", Password = "TestAccount", Username = "TestAccount" };
+        PlayFabClientAPI.RegisterPlayFabUser(request, (success) => GoGame(), (failed) => Debug.Log("Failed SignUpWithTestAccount"));
     }
     #endregion
 
     #region ETC
     void GoGame()
     {
+        //TODO -> Data Settings
+
         SceneManager.LoadScene("Game");
         Resources.UnloadUnusedAssets();
     }
