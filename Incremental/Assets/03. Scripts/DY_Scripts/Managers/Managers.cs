@@ -29,6 +29,9 @@ public class Managers : MonoBehaviour
     ResourceManager _resourceM = new ResourceManager();
     public static ResourceManager ResourceM { get { return instance._resourceM; } }
 
+    ServerManager _serverM = new ServerManager();
+    public static ServerManager ServerM { get { return instance._serverM; } }
+
     UpdateManager _updateM = new UpdateManager();
     public static UpdateManager UpdateM { get { return instance._updateM; } }
 

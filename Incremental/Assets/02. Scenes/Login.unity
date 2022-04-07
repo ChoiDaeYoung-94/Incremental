@@ -240,6 +240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _go_GooglePlay: {fileID: 0}
   _go_GameCenter: {fileID: 0}
+  _TMP_load: {fileID: 264918824}
 --- !u!1 &264918822
 GameObject:
   m_ObjectHideFlags: 0

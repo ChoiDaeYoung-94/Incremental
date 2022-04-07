@@ -19,6 +19,7 @@ public class Login : MonoBehaviour
     [Header("--- 세팅(추후 Android, IOS 둘 다 진행 시) ---")]
     public GameObject _go_GooglePlay = null;
     public GameObject _go_GameCenter = null;
+    public TMPro.TMP_Text _TMP_load = null;
 
     private void Awake()
     {
@@ -36,6 +37,7 @@ public class Login : MonoBehaviour
 
     private void Start()
     {
+        _TMP_load.text = "LogIn...";
 #if UNITY_EDITOR
         LoginWithTestAccount();
 #elif UNITY_ANDROID
@@ -65,7 +67,11 @@ public class Login : MonoBehaviour
 
     void LoginWithPlayFab()
     {
-        var request = new LoginWithEmailAddressRequest { Email = Social.localUser.userName + "@AeDeong.com", Password = Social.localUser.id };
+        string id = Social.localUser.userName + "@AeDeong.com";
+
+        Managers.DataM.SetPlayerID(id);
+
+        var request = new LoginWithEmailAddressRequest { Email = id, Password = Social.localUser.id };
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginWithPlayFabSuccess, OnLoginWithPlayFabFailure);
     }
 
@@ -104,6 +110,8 @@ public class Login : MonoBehaviour
     #region LoginWithTestAccount
     void LoginWithTestAccount()
     {
+        Managers.DataM.SetPlayerID("Test@AeDeong.com");
+
         var request = new LoginWithEmailAddressRequest { Email = "Test@AeDeong.com", Password = "TestAccount" };
         PlayFabClientAPI.LoginWithEmailAddress(request, (success) => GoGame(), (failed) => SignUpWithTestAccount());
     }
@@ -118,7 +126,9 @@ public class Login : MonoBehaviour
     #region ETC
     void GoGame()
     {
-        //TODO -> Data Settings
+        _TMP_load.text = "Check Data...";
+
+        Managers.DataM.InitPlayerData();
 
         SceneManager.LoadScene("Game");
         Resources.UnloadUnusedAssets();
