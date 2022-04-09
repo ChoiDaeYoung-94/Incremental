@@ -161,6 +161,8 @@ public class Login : MonoBehaviour
             StopCoroutine(_co_Login);
             _co_Login = null;
 
+            Debug.Log(Managers.DataM._dic_PlayFabPlayerData["Level"].Value + "데이터 확인 테스트");
+
             SceneManager.LoadScene("Game");
             Resources.UnloadUnusedAssets();
         }

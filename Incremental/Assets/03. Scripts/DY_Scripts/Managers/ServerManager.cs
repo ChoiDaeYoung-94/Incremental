@@ -15,7 +15,7 @@ public class ServerManager
     {
         var request = new UpdateUserDataRequest() { Data = Managers.DataM._dic_player, Permission = UserDataPermission.Public };
         PlayFabClientAPI.UpdateUserData(request,
-            (result) => Managers.DataM._isFinished = true,
+            (result) => GetAllData(),
             (error) => Debug.LogWarning("Failed to SetBasicData with PlayFab"));
     }
 
