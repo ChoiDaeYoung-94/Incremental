@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using PlayFab.ClientModels;
+
 public class DataManager
 {
     [Header("--- 접근 가능 데이터 ---")]
@@ -10,10 +12,14 @@ public class DataManager
     public Dictionary<string, string> _dic_player = null;
     [Tooltip("Dictionary<string, object> - 몬스터 정보 데이터")]
     public Dictionary<string, object> _dic_monsters = null;
+    [Tooltip("Dictionary<string, UserDataRecord> - PlayFab에서 받아온 PlayerData")]
+    public Dictionary<string, UserDataRecord> _dic_PlayFabPlayerData = null;
 
     [Header("--- 참고용 ---")]
-    [SerializeField, Tooltip("현재 Player가 PlayFab에 접속한 ID")]
+    [Tooltip("현재 Player가 PlayFab에 접속한 ID")]
     string _str_ID = string.Empty;
+    [Tooltip("접속 후 PlayerData 를 다 받고 세팅이 끝났는지 여부 확인")]
+    internal bool _isFinished = false;
 
     [Header("--- 임시용 ---")]
     public int _ply_level = 10;
@@ -55,13 +61,26 @@ public class DataManager
         return _str_ID;
     }
 
+    #region Server Data Checking
     /// <summary>
     /// 서버에 존재하는 플레이어 데이터 초기화
-    /// * 값이 존재하지 않는 경우에는 최솟값 등록
     /// </summary>
     internal void InitPlayerData()
     {
-        Managers.ServerM.CheckBasicData();
+        Managers.ServerM.GetAllData();
     }
+
+    /// <summary>
+    /// 서버에서 받아온 데이터 체킹 후 데이터가 존재하지 않을 경우 초기화 진행
+    /// </summary>
+    internal void CheckBasicData()
+    {
+        if (_dic_PlayFabPlayerData == null || _dic_PlayFabPlayerData.Count == 0)
+            Managers.ServerM.SetBasicData();
+        else
+            _isFinished = true;
+    }
+    #endregion
+
     #endregion
 }

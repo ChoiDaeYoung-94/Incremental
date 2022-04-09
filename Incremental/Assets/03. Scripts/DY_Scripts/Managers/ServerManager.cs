@@ -9,33 +9,29 @@ public class ServerManager
 {
     #region 
     /// <summary>
-    /// 플레이어의 초기 데이터 존재 유무 확인
+    /// 초기 데이터가 없을 경우 기본 데이터 세팅
     /// </summary>
-    internal void CheckBasicData()
+    internal void SetBasicData()
     {
-        if (string.IsNullOrEmpty(GetData("Level", forceAdd: false)))
-            SetData(Managers.DataM._dic_player);
+        var request = new UpdateUserDataRequest() { Data = Managers.DataM._dic_player, Permission = UserDataPermission.Public };
+        PlayFabClientAPI.UpdateUserData(request,
+            (result) => Managers.DataM._isFinished = true,
+            (error) => Debug.LogWarning("Failed to SetBasicData with PlayFab"));
     }
 
     /// <summary>
     /// 서버에서 데이터 가져오기
-    /// * 만약 데이터가 없을 경우 최솟값으로 적용
     /// </summary>
-    internal string GetData(string key, bool forceAdd = true)
+    internal void GetAllData()
     {
-        string value = string.Empty;
-
         var request = new GetUserDataRequest() { PlayFabId = Managers.DataM.GetPlayerID() };
-        PlayFabClientAPI.GetUserData(request, (result) => value = result.Data[key].Value,
-            (error) =>
+        PlayFabClientAPI.GetUserData(request,
+            (result) =>
             {
-                Debug.LogWarning($"Failed to GetData with PlayFab - key: {key}");
-
-                if (forceAdd)
-                    SetData(new Dictionary<string, string>() { { key, "0" } });
-            });
-
-        return value;
+                Managers.DataM._dic_PlayFabPlayerData = result.Data;
+                Managers.DataM.CheckBasicData();
+            },
+            (error) => Debug.LogWarning($"Failed to GetData with PlayFab: {error}"));
     }
 
     /// <summary>
@@ -45,7 +41,9 @@ public class ServerManager
     internal void SetData(Dictionary<string, string> dic)
     {
         var request = new UpdateUserDataRequest() { Data = dic, Permission = UserDataPermission.Public };
-        PlayFabClientAPI.UpdateUserData(request, (result) => Debug.Log("Success to SetData with PlayFab"), (error) => Debug.LogWarning("Failed to SetData with PlayFab"));
+        PlayFabClientAPI.UpdateUserData(request,
+            (result) => Debug.Log("Success to SetData with PlayFab"),
+            (error) => Debug.LogWarning("Failed to SetData with PlayFab"));
     }
     #endregion
 }
