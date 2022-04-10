@@ -28,7 +28,7 @@ public class DataManager
 
     /// <summary>
     /// Managers - Awake() -> Init()
-    /// 필요한 데이터 미리 받아 둠
+    /// 필요한 기본 데이터 미리 받아 둠
     /// </summary>
     public void Init()
     {
@@ -44,6 +44,32 @@ public class DataManager
     }
 
     #region Functions
+
+    #region Server Data Checking
+    /// <summary>
+    /// 서버에 존재하는 플레이어 데이터 초기화
+    /// * 게임 씬 진입 전 호출 됨
+    /// </summary>
+    internal void InitPlayerData()
+    {
+        Managers.ServerM.GetAllData();
+    }
+
+    /// <summary>
+    /// 서버에서 받아온 데이터 체킹 후
+    /// * 데이터가 존재하지 않을 경우 초기화 진행
+    /// * 기본 Player데이터 보다 적을 경우 [ 어딘가에서 꼬인 느낌이라 ]
+    /// </summary>
+    internal void CheckBasicData()
+    {
+        if (_dic_PlayFabPlayerData == null || _dic_PlayFabPlayerData.Count < _dic_player.Count)
+            Managers.ServerM.SetBasicData();
+        else
+            _isFinished = true;
+    }
+    #endregion
+
+    #region ETC
     /// <summary>
     /// PlayerID string 형식으로 적용
     /// </summary>
@@ -59,26 +85,6 @@ public class DataManager
     internal string GetPlayerID()
     {
         return _str_ID;
-    }
-
-    #region Server Data Checking
-    /// <summary>
-    /// 서버에 존재하는 플레이어 데이터 초기화
-    /// </summary>
-    internal void InitPlayerData()
-    {
-        Managers.ServerM.GetAllData();
-    }
-
-    /// <summary>
-    /// 서버에서 받아온 데이터 체킹 후 데이터가 존재하지 않을 경우 초기화 진행
-    /// </summary>
-    internal void CheckBasicData()
-    {
-        if (_dic_PlayFabPlayerData == null || _dic_PlayFabPlayerData.Count == 0)
-            Managers.ServerM.SetBasicData();
-        else
-            _isFinished = true;
     }
     #endregion
 

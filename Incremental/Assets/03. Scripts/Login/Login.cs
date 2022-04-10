@@ -63,14 +63,17 @@ public class Login : MonoBehaviour
                     LoginWithPlayFab();
                 }
                 else
+                {
                     Debug.LogWarning($"Failed LoginWithGoogle -> {error}");
+                    _TMP_load.text = "Failed... :'(";
+                }
             });
         }
     }
 
     void LoginWithPlayFab()
     {
-        string id = Social.localUser.userName + "@AeDeong.com";
+        string id = $"{Social.localUser.userName}@AeDeong.com";
 
         var request = new LoginWithEmailAddressRequest { Email = id, Password = Social.localUser.id };
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginWithPlayFabSuccess, OnLoginWithPlayFabFailure);
@@ -79,6 +82,7 @@ public class Login : MonoBehaviour
     void OnLoginWithPlayFabSuccess(LoginResult result)
     {
         Debug.Log("Success LoginWithPlayFab");
+        _TMP_load.text = "Success!!";
 
         Managers.DataM.SetPlayerID(result.PlayFabId);
 
@@ -94,12 +98,16 @@ public class Login : MonoBehaviour
 
     void SignUpWithPlayFab()
     {
-        var request = new RegisterPlayFabUserRequest { Email = Social.localUser.userName + "@AeDeong.com", Password = Social.localUser.id, Username = Social.localUser.userName };
+        string id = $"{Social.localUser.userName}@AeDeong.com";
+
+        var request = new RegisterPlayFabUserRequest { Email = id, Password = Social.localUser.id, Username = Social.localUser.userName };
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterWithPlayFabSuccess, OnRegisterWithPlayFabFailure);
     }
+
     void OnRegisterWithPlayFabSuccess(RegisterPlayFabUserResult result)
     {
         Debug.Log("Success SignUpWithPlayFab");
+        _TMP_load.text = "Success!!";
 
         Managers.DataM.SetPlayerID(result.PlayFabId);
 
@@ -109,6 +117,7 @@ public class Login : MonoBehaviour
     void OnRegisterWithPlayFabFailure(PlayFabError error)
     {
         Debug.LogWarning($"Failed SignUpWithPlayFab -> {error}");
+        _TMP_load.text = "Failed... :'(";
     }
     #endregion
 
@@ -128,11 +137,13 @@ public class Login : MonoBehaviour
     void SignUpWithTestAccount()
     {
         var request = new RegisterPlayFabUserRequest { Email = "Test@AeDeong.com", Password = "TestAccount", Username = "TestAccount" };
-        PlayFabClientAPI.RegisterPlayFabUser(request, (success) =>
-        {
-            Managers.DataM.SetPlayerID(success.PlayFabId);
-            GoGame();
-        }, (failed) => Debug.Log("Failed SignUpWithTestAccount"));
+        PlayFabClientAPI.RegisterPlayFabUser(request,
+            (success) =>
+            {
+                Managers.DataM.SetPlayerID(success.PlayFabId);
+                GoGame();
+            },
+            (failed) => Debug.Log("Failed SignUpWithTestAccount"));
     }
     #endregion
 
@@ -160,8 +171,6 @@ public class Login : MonoBehaviour
         {
             StopCoroutine(_co_Login);
             _co_Login = null;
-
-            Debug.Log(Managers.DataM._dic_PlayFabPlayerData["Level"].Value + "데이터 확인 테스트");
 
             SceneManager.LoadScene("Game");
             Resources.UnloadUnusedAssets();

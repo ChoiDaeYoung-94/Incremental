@@ -7,7 +7,7 @@ using PlayFab.ClientModels;
 
 public class ServerManager
 {
-    #region 
+    #region Functions
     /// <summary>
     /// 초기 데이터가 없을 경우 기본 데이터 세팅
     /// </summary>

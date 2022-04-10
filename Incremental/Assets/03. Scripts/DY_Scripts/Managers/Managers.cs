@@ -60,9 +60,7 @@ public class Managers : MonoBehaviour
             DontDestroyOnLoad(go);
             instance = go.GetComponent<Managers>();
 
-            DataM.Init();
-            PoolM.Init();
-            PopupM.Init();
+            InitM();
         }
         else
             Destroy(gameObject);
