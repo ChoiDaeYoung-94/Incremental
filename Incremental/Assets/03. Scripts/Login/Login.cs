@@ -1,3 +1,5 @@
+#pragma warning disable 0414
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -16,10 +18,17 @@ using PlayFab.ClientModels;
 
 public class Login : MonoBehaviour
 {
-    [Header("--- 세팅(추후 Android, IOS 둘 다 진행 시) ---")]
-    public GameObject _go_GooglePlay = null;
-    public GameObject _go_GameCenter = null;
-    public TMPro.TMP_Text _TMP_load = null;
+    [Header("--- 세팅 ---")]
+    [SerializeField, Tooltip("GO - Android Login Button")]
+    GameObject _go_GooglePlay = null;
+    [SerializeField, Tooltip("GO - IOS Login Button")]
+    GameObject _go_GameCenter = null;
+    [SerializeField, Tooltip("GO - Loading")]
+    GameObject _go_Loading = null;
+    [SerializeField, Tooltip("GO - Retry")]
+    GameObject _go_Retry = null;
+    [SerializeField, Tooltip("TMP - Load")]
+    TMPro.TMP_Text _TMP_load = null;
 
     [Header("--- 참고용 ---")]
     Coroutine _co_Login = null;
@@ -41,14 +50,48 @@ public class Login : MonoBehaviour
     private void Start()
     {
         _TMP_load.text = "LogIn...";
+        CheckConnection();
+    }
+
+    #region Functions
+
+    #region Checking Connection
+    /// <summary>
+    /// 인터넷 연결 확인 후 로그인 진입
+    /// * Retry 버튼 클릭시 연결 재시도
+    /// </summary>
+    public void CheckConnection()
+    {
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+            ActivateRetry();
+        else
+            StartLogin();
+    }
+
+    /// <summary>
+    /// Retry Panel 활성화
+    /// </summary>
+    void ActivateRetry()
+    {
+        _go_Loading.SetActive(false);
+        _go_Retry.SetActive(true);
+    }
+
+    /// <summary>
+    /// 로그인 진입
+    /// </summary>
+    void StartLogin()
+    {
+        _go_Retry.SetActive(false);
+        _go_Loading.SetActive(true);
+
 #if UNITY_EDITOR
         LoginWithTestAccount();
 #elif UNITY_ANDROID
         LoginWithGoogle();
 #endif
     }
-
-    #region Functions
+    #endregion
 
     #region Login & SignUp
     void LoginWithGoogle()
