@@ -72,8 +72,7 @@ public class Managers : MonoBehaviour
     }
 
     /// <summary>
-    /// 추후 다른 씬 특히 QA 전용 씬을 만들던지 할 때
-    /// flow를 대비하여
+    /// 추후 다른 씬 특히 QA 전용 씬을 만들던지 할 때 flow 대비
     /// </summary>
     public void InitM()
     {
@@ -84,7 +83,6 @@ public class Managers : MonoBehaviour
 
     /// <summary>
     /// 씬 전환 시 클리어
-    /// TODO : Resources.UnloadUnusedAssets() 씬 전환 시 추가 해야 함
     /// </summary>
     public void Clear()
     {

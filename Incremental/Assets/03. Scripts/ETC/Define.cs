@@ -38,7 +38,8 @@ namespace DY
         public enum DropItems
         {
             Base,
-            Gold
+            Gold,
+            Experience
         }
 
         /// <summary>

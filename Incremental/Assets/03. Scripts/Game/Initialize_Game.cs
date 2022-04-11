@@ -31,7 +31,7 @@ public class Initialize_Game : MonoBehaviour
                 if (item.GetComponent(script.ToString()) != null)
                 {
                     // 실행해야 할 메서드
-                    item.GetComponent(script.ToString()).SendMessage("Init");
+                    item.GetComponent(script.ToString()).SendMessage("StartInit");
                     break;
                 }
             }

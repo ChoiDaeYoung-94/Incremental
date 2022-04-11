@@ -18,7 +18,7 @@ public class UIManage : MonoBehaviour   // Canvas_Game에 존재
     [Header("--- 참고용 ---")]
     Coroutine _co_status = null;
 
-    public void Init()
+    public void StartInit()
     {
 
     }

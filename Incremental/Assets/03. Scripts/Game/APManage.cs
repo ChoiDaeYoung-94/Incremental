@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class APManage : MonoBehaviour
 {
-    public void Init()
+    public void StartInit()
     {
         StartCoroutine(MonsterSettings());
     }

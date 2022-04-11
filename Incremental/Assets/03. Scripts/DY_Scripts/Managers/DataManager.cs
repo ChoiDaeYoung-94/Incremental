@@ -21,10 +21,13 @@ public class DataManager
     [Tooltip("접속 후 PlayerData 를 다 받고 세팅이 끝났는지 여부 확인")]
     internal bool _isFinished = false;
 
-    [Header("--- 임시용 ---")]
-    public int _ply_level = 10;
-    public int _ply_power = 30;
-    public float _ply_attackSpeed = 0.5f;
+    [Header("--- 참고용 [ 플레이어 데이터 미리 가공 ] ---")]
+    internal int _ply_level = 0;
+    internal long _ply_experience = 0;
+    internal int _ply_power = 0;
+    internal float _ply_attackSpeed = 0;
+    internal int _ply_str = 0;
+    internal int _ply_bgIndex = 0;
 
     /// <summary>
     /// Managers - Awake() -> Init()
@@ -65,7 +68,22 @@ public class DataManager
         if (_dic_PlayFabPlayerData == null || _dic_PlayFabPlayerData.Count < _dic_player.Count)
             Managers.ServerM.SetBasicData();
         else
-            _isFinished = true;
+            SetPlayerData();
+    }
+
+    /// <summary>
+    /// Player Data 미리 가공
+    /// </summary>
+    void SetPlayerData()
+    {
+        _ply_level = int.Parse(_dic_PlayFabPlayerData["Level"].Value);
+        _ply_experience = long.Parse(_dic_PlayFabPlayerData["Experience"].Value);
+        _ply_power = int.Parse(_dic_PlayFabPlayerData["Power"].Value);
+        _ply_attackSpeed = float.Parse(_dic_PlayFabPlayerData["AttackSpeed"].Value);
+        _ply_str = int.Parse(_dic_PlayFabPlayerData["STR"].Value);
+        _ply_bgIndex = int.Parse(_dic_PlayFabPlayerData["BgIndex"].Value);
+
+        _isFinished = true;
     }
     #endregion
 

@@ -45,11 +45,10 @@ public class Player : MonoBehaviour
     [SerializeField, Tooltip("공격 대상 몬스터 script")]
     Monster _curMonster = null;
 
-    public void Init()
+    public void StartInit()
     {
         _plyState = PlayerState.Run;
 
-        // 임시
         _level = Managers.DataM._ply_level;
         _power = Managers.DataM._ply_power;
         _attackSpeed = Managers.DataM._ply_attackSpeed;
