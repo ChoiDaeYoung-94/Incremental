@@ -15,7 +15,8 @@ public class Initialize_Game : MonoBehaviour
     {
         Player,
         Top_Menu,
-        UIManage,
+        Middle_Menu,
+        Panel_characterStatus,
         BgManage,
         APManage
     }

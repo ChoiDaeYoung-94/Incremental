@@ -7,7 +7,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManage : MonoBehaviour   // Canvas_Game에 존재
+using TMPro;
+
+public class Panel_characterStatus : MonoBehaviour
 {
     [Header("--- Bottom_Content - 미리 가지고 있어야 할 data ---")]
     [SerializeField, Tooltip("GO - 강화 패널 go")]
@@ -23,7 +25,7 @@ public class UIManage : MonoBehaviour   // Canvas_Game에 존재
     /// </summary>
     public void StartInit()
     {
-
+        
     }
 
     #region Functions
@@ -144,7 +146,7 @@ public class UIManage : MonoBehaviour   // Canvas_Game에 존재
                     break;
                 case "R_VIT":
                     Debug.Log("R_VIT_Btn Clicked");
-                    break;                
+                    break;
                 case "G_STR":
                     Debug.Log("G_STR_Btn Clicked");
                     break;
@@ -173,12 +175,12 @@ public class UIManage : MonoBehaviour   // Canvas_Game에 존재
     #endregion
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(UIManage))]
+    [CustomEditor(typeof(Panel_characterStatus))]
     public class customEditor : Editor
     {
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.HelpBox("Canvas_Game아래 UI 관리", MessageType.Info);
+            EditorGUILayout.HelpBox("Canvas_Game아래 Bottom_Content - Panel_characterStatus - 관리", MessageType.Info);
 
             base.OnInspectorGUI();
         }
