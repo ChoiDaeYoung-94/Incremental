@@ -31,7 +31,6 @@ public class Initialize_Game : MonoBehaviour
             {
                 if (item.GetComponent(script.ToString()) != null)
                 {
-                    // 실행해야 할 메서드
                     item.GetComponent(script.ToString()).SendMessage("StartInit");
                     break;
                 }
@@ -45,7 +44,7 @@ public class Initialize_Game : MonoBehaviour
     {
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.HelpBox("초기화 순서를 지정할 경우 사용", MessageType.Info);
+            EditorGUILayout.HelpBox("게임 씬 초기화", MessageType.Info);
 
             base.OnInspectorGUI();
         }

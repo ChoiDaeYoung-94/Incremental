@@ -24,12 +24,18 @@ public class DataManager
     internal bool _isFinished = false;
 
     [Header("--- 참고용 [ 플레이어 데이터 미리 가공 ] ---")]
+    internal int _ply_gold = 0;
+    internal int _ply_diamond = 0;
     internal int _ply_level = 0;
     internal long _ply_experience = 0;
     internal int _ply_power = 0;
     internal float _ply_attackSpeed = 0;
     internal int _ply_str = 0;
     internal int _ply_bgIndex = 0;
+
+    [Header("--- 참고용 [ 플레이어 데이터를 통해 임시 계산 ] ---")]
+    [SerializeField, Tooltip("float - 플레이어의 현재 레벨에 필요한 총 경험치")]
+    internal float _totalExp = 0;
 
     /// <summary>
     /// Managers - Awake() -> Init()

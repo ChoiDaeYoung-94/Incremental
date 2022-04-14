@@ -1,3 +1,4 @@
+// 추후 IOS때 사용 할 GO의 Warning
 #pragma warning disable 0414
 
 #if UNITY_EDITOR

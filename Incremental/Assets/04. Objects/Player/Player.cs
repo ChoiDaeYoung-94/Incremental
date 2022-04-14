@@ -45,6 +45,9 @@ public class Player : MonoBehaviour
     [SerializeField, Tooltip("공격 대상 몬스터 script")]
     Monster _curMonster = null;
 
+    /// <summary>
+    /// Initialize_Game.cs 에서 호출
+    /// </summary>
     public void StartInit()
     {
         _plyState = PlayerState.Run;

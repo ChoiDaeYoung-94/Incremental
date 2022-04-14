@@ -128,12 +128,10 @@ public class PopupManager
 
     public void DisableAllPop()
     {
-        for (int i = -1; ++i < _popupStack.Count;)
-        {
-            GameObject temp = null;
-            temp = _popupStack.Pop();
-            temp.SetActive(false);
-        }
+        foreach (GameObject popup in _popupStack)
+            popup.SetActive(false);
+
+        _popupStack.Clear();
     }
     #endregion
 

@@ -33,6 +33,9 @@ public class BgManage : MonoBehaviour
     [SerializeField, Tooltip("사용 가능 한 BG max index")]
     int _maxIndex = 0;
 
+    /// <summary>
+    /// Initialize_Game.cs 에서 호출
+    /// </summary>
     public void StartInit()
     {
         _maxIndex = Enum.GetValues(typeof(DY.Define.BgName)).Length - 1;

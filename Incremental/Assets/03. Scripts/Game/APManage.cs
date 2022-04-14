@@ -10,6 +10,9 @@ using UnityEngine;
 
 public class APManage : MonoBehaviour
 {
+    /// <summary>
+    /// Initialize_Game.cs 에서 호출
+    /// </summary>
     public void StartInit()
     {
         StartCoroutine(MonsterSettings());
