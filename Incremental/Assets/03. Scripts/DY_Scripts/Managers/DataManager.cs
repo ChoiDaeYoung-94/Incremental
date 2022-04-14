@@ -18,6 +18,8 @@ public class DataManager
     [Header("--- 참고용 ---")]
     [Tooltip("현재 Player가 PlayFab에 접속한 ID")]
     string _str_ID = string.Empty;
+    [Tooltip("현재 Player가 설정한 NickName")]
+    internal string _str_NickName = string.Empty;
     [Tooltip("접속 후 PlayerData 를 다 받고 세팅이 끝났는지 여부 확인")]
     internal bool _isFinished = false;
 
@@ -76,6 +78,11 @@ public class DataManager
     /// </summary>
     void SetPlayerData()
     {
+        if (string.IsNullOrEmpty(_str_NickName))
+            _str_NickName = _dic_PlayFabPlayerData["NickName"].Value;
+        else
+            Managers.ServerM.SetData(new Dictionary<string, string> { { "NickName", _str_NickName } });
+
         _ply_level = int.Parse(_dic_PlayFabPlayerData["Level"].Value);
         _ply_experience = long.Parse(_dic_PlayFabPlayerData["Experience"].Value);
         _ply_power = int.Parse(_dic_PlayFabPlayerData["Power"].Value);

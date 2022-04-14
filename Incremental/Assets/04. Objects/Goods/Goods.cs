@@ -57,6 +57,10 @@ public class Goods : GoodsBase
                 // TODO -> 골드 처리
                 UnityEngine.Debug.Log("골드 획득");
                 break;
+            case DY.Define.DropItems.EXP:
+                // TODO -> 경험치 처리
+                UnityEngine.Debug.Log("경험치 획득");
+                break;
         }
 
         Managers.PoolM.PushToPool(gameObject);

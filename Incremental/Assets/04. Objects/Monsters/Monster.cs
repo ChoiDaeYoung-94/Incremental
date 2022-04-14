@@ -73,7 +73,7 @@ public class Monster : MonsterBase
 
     void DropItem()
     {
-        // Gold는 80% -> 추후 경험치는 100%
+        // Gold는 80%, 경험치는 100%
         if (UnityEngine.Random.Range(1, 11) > 2)
         {
             UnityEngine.GameObject go_gold = Managers.PoolM.PopFromPool(DY.Define.DropItems.Gold.ToString());
@@ -81,6 +81,11 @@ public class Monster : MonsterBase
             gold.SettingBase(transform);
             gold.Init();
         }
+
+        UnityEngine.GameObject go_exp = Managers.PoolM.PopFromPool(DY.Define.DropItems.EXP.ToString());
+        Goods exp = go_exp.GetComponent<Goods>();
+        exp.SettingBase(transform);
+        exp.Init();
     }
     #endregion
 

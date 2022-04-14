@@ -29,6 +29,12 @@ public class Login : MonoBehaviour
     GameObject _go_Retry = null;
     [SerializeField, Tooltip("TMP - Load")]
     TMPro.TMP_Text _TMP_load = null;
+    [SerializeField, Tooltip("GO - NickName")]
+    GameObject _go_NickName = null;
+    [SerializeField, Tooltip("TMP - NickName")]
+    TMPro.TMP_Text _TMP_NickName = null;
+    [SerializeField, Tooltip("GO - Warning")]
+    GameObject _go_Warning = null;
 
     [Header("--- 참고용 ---")]
     Coroutine _co_Login = null;
@@ -136,7 +142,27 @@ public class Login : MonoBehaviour
     {
         Debug.Log("Failed LoginWithPlayFab -> SignUpWithPlayFab");
 
-        SignUpWithPlayFab();
+        // nickname 먼저 설정
+        _go_NickName.SetActive(true);
+    }
+
+    /// <summary>
+    /// Panel_NickName -> Btn_Confirm
+    /// </summary>
+    public void CheckNickName()
+    {
+        string str_temp = _TMP_NickName.text;
+
+        if (string.IsNullOrEmpty(str_temp) || str_temp.Contains(" ") || str_temp.Length < 2 || str_temp.Length > 10)
+            _go_Warning.SetActive(true);
+        else
+        {
+            _go_NickName.SetActive(false);
+            _go_Warning.SetActive(false);
+
+            Managers.DataM._str_NickName = str_temp;
+            SignUpWithPlayFab();
+        }
     }
 
     void SignUpWithPlayFab()

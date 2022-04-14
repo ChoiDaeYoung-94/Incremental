@@ -39,7 +39,7 @@ namespace DY
         {
             Base,
             Gold,
-            Experience
+            EXP
         }
 
         /// <summary>
