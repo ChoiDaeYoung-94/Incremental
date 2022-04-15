@@ -27,7 +27,7 @@ public class DataManager
     internal int _ply_gold = 0;
     internal int _ply_diamond = 0;
     internal int _ply_level = 0;
-    internal long _ply_experience = 0;
+    internal float _ply_experience = 0;
     internal float _ply_power = 0;
     internal float _ply_attackSpeed = 0;
     internal int _ply_str = 0;
@@ -35,7 +35,7 @@ public class DataManager
 
     [Header("--- 참고용 [ 플레이어 데이터를 통해 임시 계산 ] ---")]
     [SerializeField, Tooltip("float - 플레이어의 현재 레벨에 필요한 총 경험치")]
-    internal long _totalExp = 0;
+    internal float _totalExp = 0;
 
     /// <summary>
     /// Managers - Awake() -> Init()
@@ -122,8 +122,10 @@ public class DataManager
     internal string ExpToPercentage()
     {
         float percentage = _ply_experience / _totalExp * 100f;
+        if (percentage >= 100f)
+            percentage = 100f;
 
-        return $"{string.Format("{0:0.00}", percentage)} %";
+        return $"{string.Format("{0:0.#0}", percentage)} %";
     }
 
     internal float GetPlayerData(DY.Define.Stat stat)
@@ -153,13 +155,15 @@ public class DataManager
         {
             _ply_experience -= _totalExp;
             ++_ply_level;
+            GetTotalExp();
 
             Panel_characterStatus.Instance._panel_playerInfo.Init();
             Top_Menu.Instance.SetLv();
+            Top_Menu.Instance.SetTier();
 
             if (_ply_level % 10 == 0)
             {
-                if (++_ply_bgIndex > BgManage.Instance._maxIndex)
+                if (++_ply_bgIndex >= BgManage.Instance._maxIndex)
                     _ply_bgIndex = 0;
 
                 BgManage.Instance.SetBg(_ply_bgIndex);

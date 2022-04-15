@@ -50,12 +50,7 @@ public class Top_Menu : MonoBehaviour
     {
         SetLv();
 
-        if (Managers.DataM._ply_level > 0)
-            _img_tier.sprite = _spr_tier[0];
-        if (Managers.DataM._ply_level > 100)
-            _img_tier.sprite = _spr_tier[1];
-        if (Managers.DataM._ply_level > 200)
-            _img_tier.sprite = _spr_tier[2];
+        SetTier();
 
         _TMP_nickName.text = Managers.DataM._str_NickName;
 
@@ -67,6 +62,16 @@ public class Top_Menu : MonoBehaviour
     internal void SetLv()
     {
         _TMP_level.text = $"Lv. {Managers.DataM._ply_level}";
+    }
+
+    internal void SetTier()
+    {
+        if (Managers.DataM._ply_level > 0)
+            _img_tier.sprite = _spr_tier[0];
+        if (Managers.DataM._ply_level > 100)
+            _img_tier.sprite = _spr_tier[1];
+        if (Managers.DataM._ply_level > 200)
+            _img_tier.sprite = _spr_tier[2];
     }
 
     internal void SetExp()

@@ -248,7 +248,7 @@ PlayerSettings:
   AndroidTargetDevices: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: D:/Documents/01. Projects/04. Working/01. Unity_Projects/Incremental_Git/AeDeong.keystore
+  AndroidKeystoreName: C:/Users/ChoiDaeYoung/Documents/02. Unity_Projects/03. Git/Incremental_Git/AeDeong.keystore
   AndroidKeyaliasName: aedeong
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0
