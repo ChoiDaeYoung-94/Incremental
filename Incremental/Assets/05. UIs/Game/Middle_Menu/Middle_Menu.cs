@@ -11,6 +11,15 @@ using TMPro;
 
 public class Middle_Menu : MonoBehaviour
 {
+    static Middle_Menu instance;
+    public static Middle_Menu Instance { get { return instance; } }
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+    }
+
     [Header("--- 세팅 ---")]
     [SerializeField, Tooltip("TMP - Player Gold")]
     TMP_Text _TMP_gold = null;
@@ -20,7 +29,7 @@ public class Middle_Menu : MonoBehaviour
     /// </summary>
     public void StartInit()
     {
-        _TMP_gold.text = Managers.DataM._ply_gold.ToString();
+        _TMP_gold.text = string.Format("{0:#,##0}", Managers.DataM._ply_gold);
     }
 
     #region Functions

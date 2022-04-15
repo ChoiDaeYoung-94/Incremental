@@ -43,7 +43,11 @@ public class ServerManager
         var request = new UpdateUserDataRequest() { Data = dic, Permission = UserDataPermission.Public };
         PlayFabClientAPI.UpdateUserData(request,
             (result) => Debug.Log("Success to SetData with PlayFab"),
-            (error) => Debug.LogWarning("Failed to SetData with PlayFab"));
+            (error) =>
+            {
+                Debug.LogWarning("Failed to SetData with PlayFab");
+                SetData(dic);
+            });
     }
     #endregion
 }

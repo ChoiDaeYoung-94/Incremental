@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
     [SerializeField, Tooltip("플레이어 레벨")]
     int _level = 0;
     [SerializeField, Tooltip("플레이어 공격력")]
-    int _power = 0;
+    float _power = 0;
     [SerializeField, Tooltip("플레이어 공격 속도")]
     float _attackSpeed = 0;
     [SerializeField, Tooltip("공격 대상 몬스터 script")]
@@ -80,7 +80,7 @@ public class Player : MonoBehaviour
     {
         if (_curMonster != null)
         {
-            _curMonster.Hit(Managers.DataM._ply_power);
+            _curMonster.Hit((int)Managers.DataM._ply_power);
         }
     }
 

@@ -28,14 +28,14 @@ public class DataManager
     internal int _ply_diamond = 0;
     internal int _ply_level = 0;
     internal long _ply_experience = 0;
-    internal int _ply_power = 0;
+    internal float _ply_power = 0;
     internal float _ply_attackSpeed = 0;
     internal int _ply_str = 0;
     internal int _ply_bgIndex = 0;
 
     [Header("--- 참고용 [ 플레이어 데이터를 통해 임시 계산 ] ---")]
     [SerializeField, Tooltip("float - 플레이어의 현재 레벨에 필요한 총 경험치")]
-    internal float _totalExp = 0;
+    internal long _totalExp = 0;
 
     /// <summary>
     /// Managers - Awake() -> Init()
@@ -89,14 +89,95 @@ public class DataManager
         else
             Managers.ServerM.SetData(new Dictionary<string, string> { { "NickName", _str_NickName } });
 
+        _ply_gold = int.Parse(_dic_PlayFabPlayerData["Gold"].Value);
+        _ply_diamond = int.Parse(_dic_PlayFabPlayerData["Diamond"].Value);
         _ply_level = int.Parse(_dic_PlayFabPlayerData["Level"].Value);
         _ply_experience = long.Parse(_dic_PlayFabPlayerData["Experience"].Value);
-        _ply_power = int.Parse(_dic_PlayFabPlayerData["Power"].Value);
+        _ply_power = float.Parse(_dic_PlayFabPlayerData["Power"].Value);
         _ply_attackSpeed = float.Parse(_dic_PlayFabPlayerData["AttackSpeed"].Value);
         _ply_str = int.Parse(_dic_PlayFabPlayerData["STR"].Value);
         _ply_bgIndex = int.Parse(_dic_PlayFabPlayerData["BgIndex"].Value);
 
+        GetTotalExp();
+
         _isFinished = true;
+    }
+    #endregion
+
+    #region PlayerData
+    /// <summary>
+    /// 현재 레벨에서 필요한 경험치 계산
+    /// * 따로 경험치 테이블 안 만듬 -> 임시 계산식...
+    /// </summary>
+    void GetTotalExp()
+    {
+        int totalExp = 0;
+
+        for (int i = 0; ++i <= _ply_level;)
+            totalExp += i * 10 + (i * 5) * 10;
+
+        _totalExp = totalExp;
+    }
+
+    internal string ExpToPercentage()
+    {
+        float percentage = _ply_experience / _totalExp * 100f;
+
+        return $"{string.Format("{0:0.00}", percentage)} %";
+    }
+
+    internal float GetPlayerData(DY.Define.Stat stat)
+    {
+        if (stat == DY.Define.Stat.Power)
+            return _ply_power;
+        if (stat == DY.Define.Stat.AttackSpeed)
+            return _ply_attackSpeed;
+
+        return 0f;
+    }
+
+    internal object SetPlayerData(DY.Define.Stat stat, float plus)
+    {
+        if (stat == DY.Define.Stat.Power)
+            return _ply_power += (int)plus;
+        if (stat == DY.Define.Stat.AttackSpeed)
+            return _ply_attackSpeed += plus;
+
+        return null;
+    }
+
+    bool isChange = false;
+    internal void LevelUpCheck()
+    {
+        if (_ply_experience >= _totalExp)
+        {
+            _ply_experience -= _totalExp;
+            ++_ply_level;
+
+            Panel_characterStatus.Instance._panel_playerInfo.Init();
+            Top_Menu.Instance.SetLv();
+
+            if (_ply_level % 10 == 0)
+            {
+                if (++_ply_bgIndex > BgManage.Instance._maxIndex)
+                    _ply_bgIndex = 0;
+
+                BgManage.Instance.SetBg(_ply_bgIndex);
+                isChange = true;
+            }
+        }
+    }
+
+    internal void UpdateLevel()
+    {
+        Managers.ServerM.
+            SetData(new Dictionary<string, string> { { "Level", _ply_level.ToString() }, { "Experience", _ply_experience.ToString() } });
+
+        if (isChange)
+        {
+            Managers.ServerM.SetData(new Dictionary<string, string> { { "BgIndex", _ply_bgIndex.ToString() } });
+            isChange = false;
+        }
     }
     #endregion
 

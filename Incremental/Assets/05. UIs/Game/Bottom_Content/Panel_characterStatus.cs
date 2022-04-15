@@ -11,6 +11,21 @@ using TMPro;
 
 public class Panel_characterStatus : MonoBehaviour
 {
+    static Panel_characterStatus instance;
+    public static Panel_characterStatus Instance { get { return instance; } }
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+    }
+
+    [Header("--- 세팅 ---")]
+    [SerializeField, Tooltip("Panel_PlayerInfo")]
+    internal Panel_PlayerInfo _panel_playerInfo = null;
+    [SerializeField, Tooltip("Panel_StatBase")]
+    Panel_StatBase[] _panelStatBase = null;
+
     [Header("--- Bottom_Content - 미리 가지고 있어야 할 data ---")]
     [SerializeField, Tooltip("GO - 강화 패널 go")]
     GameObject[] _go_reinforcing = null;
@@ -25,7 +40,10 @@ public class Panel_characterStatus : MonoBehaviour
     /// </summary>
     public void StartInit()
     {
-        
+        _panel_playerInfo.Init();
+
+        foreach (Panel_StatBase stat in _panelStatBase)
+            stat.Init();
     }
 
     #region Functions
@@ -78,6 +96,15 @@ public class Panel_characterStatus : MonoBehaviour
     }
 
     /// <summary>
+    /// panel_characterStatus - Panel_R_AttackSpeed - Button_plus 클릭 시
+    /// </summary>
+    public void Panel_R_AttackSpeed(bool isOn)
+    {
+        BtnClicked(isOn, "R_AttackSpeed");
+    }
+
+    /*
+    /// <summary>
     /// panel_characterStatus - panel_R_HP - Button_plus 클릭 시
     /// </summary>
     public void R_HP_Btn(bool isOn)
@@ -92,6 +119,7 @@ public class Panel_characterStatus : MonoBehaviour
     {
         BtnClicked(isOn, "R_VIT");
     }
+    */
 
     /// <summary>
     /// panel_characterStatus - panel_G_STR - Button_plus 클릭 시
@@ -101,6 +129,7 @@ public class Panel_characterStatus : MonoBehaviour
         BtnClicked(isOn, "G_STR");
     }
 
+    /*
     /// <summary>
     /// panel_characterStatus - panel_G_HP - Button_plus 클릭 시
     /// </summary>
@@ -116,6 +145,7 @@ public class Panel_characterStatus : MonoBehaviour
     {
         BtnClicked(isOn, "G_VIT");
     }
+    */
 
     void BtnClicked(bool isOn, string who)
     {
@@ -137,25 +167,28 @@ public class Panel_characterStatus : MonoBehaviour
             {
                 case "Lv":
                     Debug.Log("LvUpBtn Clicked");
+                    Managers.DataM.LevelUpCheck();
                     break;
                 case "R_STR":
                     Debug.Log("R_STR_Btn Clicked");
+                    _panelStatBase[0].UpdateStat();
                     break;
-                case "R_HP":
-                    Debug.Log("R_HP_Btn Clicked");
+                case "R_AttackSpeed":
+                    Debug.Log("R_AttackSpeed_Btn Clicked");
+                    _panelStatBase[1].UpdateStat();
                     break;
-                case "R_VIT":
-                    Debug.Log("R_VIT_Btn Clicked");
-                    break;
-                case "G_STR":
-                    Debug.Log("G_STR_Btn Clicked");
-                    break;
-                case "G_HP":
-                    Debug.Log("G_HP_Btn Clicked");
-                    break;
-                case "G_VIT":
-                    Debug.Log("G_VIT_Btn Clicked");
-                    break;
+                //case "R_VIT":
+                //    Debug.Log("R_VIT_Btn Clicked");
+                //    break;
+                //case "G_STR":
+                //    Debug.Log("G_STR_Btn Clicked");
+                //    break;
+                //case "G_HP":
+                //    Debug.Log("G_HP_Btn Clicked");
+                //    break;
+                //case "G_VIT":
+                //    Debug.Log("G_VIT_Btn Clicked");
+                //    break;
             }
 
             yield return new WaitForSeconds(0.1f);
@@ -168,6 +201,10 @@ public class Panel_characterStatus : MonoBehaviour
         {
             StopCoroutine(_co_status);
             _co_status = null;
+
+            Managers.DataM.UpdateLevel();
+            foreach (Panel_StatBase stat in _panelStatBase)
+                stat.UpdateServerStat();
         }
     }
     #endregion

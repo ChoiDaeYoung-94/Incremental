@@ -11,6 +11,15 @@ using TMPro;
 
 public class Top_Menu : MonoBehaviour
 {
+    static Top_Menu instance;
+    public static Top_Menu Instance { get { return instance; } }
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+    }
+
     [Header("--- 세팅 ---")]
     [SerializeField, Tooltip("TMP - Player Level")]
     TMP_Text _TMP_level = null;
@@ -39,7 +48,7 @@ public class Top_Menu : MonoBehaviour
     /// </summary>
     void SetInformations()
     {
-        _TMP_level.text = $"Lv. {Managers.DataM._ply_level}";
+        SetLv();
 
         if (Managers.DataM._ply_level > 0)
             _img_tier.sprite = _spr_tier[0];
@@ -50,26 +59,20 @@ public class Top_Menu : MonoBehaviour
 
         _TMP_nickName.text = Managers.DataM._str_NickName;
 
-        _TMP_experience.text = ExpToPercentage();
+        SetExp();
 
         _TMP_diaAmount.text = Managers.DataM._ply_diamond.ToString();
     }
 
-    string ExpToPercentage()
+    internal void SetLv()
     {
-        // 따로 경험치 테이블 안 만듬 -> 임시 계산식...
-        int totalExp = 0;
-
-        for (int i = 0; ++i <= Managers.DataM._ply_level;)
-            totalExp += i * 10 + (i * 5) * 10;
-
-        Managers.DataM._totalExp = totalExp;
-
-        float percentage = Managers.DataM._ply_experience / Managers.DataM._totalExp * 100f;
-
-        return $"{string.Format("{0:0.00}", percentage)} %";
+        _TMP_level.text = $"Lv. {Managers.DataM._ply_level}";
     }
 
+    internal void SetExp()
+    {
+        _TMP_experience.text = Managers.DataM.ExpToPercentage();
+    }
     #endregion
 
 #if UNITY_EDITOR

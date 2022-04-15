@@ -54,16 +54,31 @@ public class Goods : GoodsBase
         switch (_item)
         {
             case DY.Define.DropItems.Gold:
-                // TODO -> 골드 처리
                 UnityEngine.Debug.Log("골드 획득");
+                GetGold();
                 break;
             case DY.Define.DropItems.EXP:
-                // TODO -> 경험치 처리
                 UnityEngine.Debug.Log("경험치 획득");
+                GetExp();
                 break;
         }
 
         Managers.PoolM.PushToPool(gameObject);
+    }
+
+    void GetGold()
+    {
+        Managers.DataM._ply_gold += 100;
+        Middle_Menu.Instance.StartInit();
+        Managers.ServerM.SetData(new System.Collections.Generic.Dictionary<string, string> { { "Gold", Managers.DataM._ply_gold.ToString() } });
+    }
+
+    void GetExp()
+    {
+        Managers.DataM._ply_experience += UnityEngine.Random.Range(10, 20);
+        Top_Menu.Instance.SetExp();
+        Panel_characterStatus.Instance._panel_playerInfo.Init();
+        Managers.ServerM.SetData(new System.Collections.Generic.Dictionary<string, string> { { "Experience", Managers.DataM._ply_experience.ToString() } });
     }
     #endregion
 

@@ -10,6 +10,27 @@ namespace DY
         public static string _activePool = "ActivePool";
 
         /// <summary>
+        /// 현재 플레이어가 사용하는 Status Data
+        /// </summary>
+        public enum Stat
+        {
+            Base,
+            Power,
+            AttackSpeed,
+            STR
+        }
+
+        /// <summary>
+        /// 플레이어의 stat은 무조건 3씩 증가
+        /// </summary>
+        public static int _plusStat = 3;
+
+        /// <summary>
+        /// 플레이어의 공격 속도의 경우만 0.01씩 증가
+        /// </summary>
+        public static float _plusAttackSpeedStat = 0.01f;
+
+        /// <summary>
         /// 사용하는 배경 이름
         /// </summary>
         public enum BgName

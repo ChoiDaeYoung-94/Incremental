@@ -31,7 +31,7 @@ public class BgManage : MonoBehaviour
 
     [Header("--- 참고용 ---")]
     [SerializeField, Tooltip("사용 가능 한 BG max index")]
-    int _maxIndex = 0;
+    internal int _maxIndex = 0;
 
     /// <summary>
     /// Initialize_Game.cs 에서 호출
