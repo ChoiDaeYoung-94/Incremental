@@ -115,7 +115,7 @@ public class Login : MonoBehaviour
                 else
                 {
                     Debug.LogWarning($"Failed LoginWithGoogle -> {error}");
-                    _TMP_load.text = "Failed... :'(";
+                    _TMP_load.text = "Failed LoginWithGoogle... :'(";
                 }
             });
         }
@@ -123,9 +123,9 @@ public class Login : MonoBehaviour
 
     void LoginWithPlayFab()
     {
-        string id = $"{Social.localUser.userName}@AeDeong.com";
+        string id = $"{Social.localUser.id}@AeDeong.com";
 
-        var request = new LoginWithEmailAddressRequest { Email = id, Password = Social.localUser.id };
+        var request = new LoginWithEmailAddressRequest { Email = id, Password = Social.localUser.userName };
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginWithPlayFabSuccess, OnLoginWithPlayFabFailure);
     }
 
@@ -168,9 +168,9 @@ public class Login : MonoBehaviour
 
     void SignUpWithPlayFab()
     {
-        string id = $"{Social.localUser.userName}@AeDeong.com";
+        string id = $"{Social.localUser.id}@AeDeong.com";
 
-        var request = new RegisterPlayFabUserRequest { Email = id, Password = Social.localUser.id, Username = Social.localUser.userName };
+        var request = new RegisterPlayFabUserRequest { Email = id, Password = Social.localUser.userName, Username = Social.localUser.userName };
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterWithPlayFabSuccess, OnRegisterWithPlayFabFailure);
     }
 
@@ -187,7 +187,7 @@ public class Login : MonoBehaviour
     void OnRegisterWithPlayFabFailure(PlayFabError error)
     {
         Debug.LogWarning($"Failed SignUpWithPlayFab -> {error}");
-        _TMP_load.text = "Failed... :'(";
+        _TMP_load.text = "Failed SignUpWithPlayFab... :'(";
     }
     #endregion
 
