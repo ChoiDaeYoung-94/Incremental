@@ -12,6 +12,8 @@
 /[Bb]uilds/
 /[Ll]ogs/
 
+.vsconfig
+
 06. Standard Assets
 07. ETC
 PlayFabEditorExtensions/
