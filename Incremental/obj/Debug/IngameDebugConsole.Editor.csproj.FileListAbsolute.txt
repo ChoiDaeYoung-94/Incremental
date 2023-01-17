@@ -1,2 +1,0 @@
-C:\Users\ChoiDaeYoung\Documents\02. Unity_Projects\03. Git\Incremental_Git\Incremental\obj\Debug\IngameDebugConsole.Editor.csproj.AssemblyReference.cache
-C:\Users\ChoiDaeYoung\Documents\02. Unity_Projects\03. Git\Incremental_Git\Incremental\obj\Debug\IngameDebugConsole.Editor.csproj.CoreCompileInputs.cache
