@@ -250,7 +250,7 @@ PlayerSettings:
   androidSplashScreen: {fileID: 0}
   AndroidKeystoreName: D:/Documents/01. Projects/04. Working/01. Unity_Projects/00.
     Done/Incremental_Git/AeDeong.keystore
-  AndroidKeyaliasName: aedeong
+  AndroidKeyaliasName: 
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
