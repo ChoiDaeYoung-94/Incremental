@@ -8,29 +8,47 @@ using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 
-public class BuildScript : MonoBehaviour
+public class BuildScript : MonoBehaviour, IPostprocessBuildWithReport
 {
+    // AOS build시 필요한 data
+    private const string PRODUCT_NAME = "Incremental";
+    private const string IDENTIFIER = "com.AeDeong.Incremental";
+    private const string KEYSTORE_NAME = "src/AeDeong.keystore";
+    private const string KEYSTORE_PASS = "";
+    private const string KEYALIAS_NAME = "aedeong";
+    private const string KEYALIAS_PASS = "";
+
+    // version 자동화 관련
     private const string VERSION = "1.0.";
     private const string DAY_CALCULATEVERSION = "01/21/2023 00:00:00";
     private const string BUILDINFO_PATH = "BuildInfo/buildinfo.txt";
     private const string BUILDINFO_FINISHVERSIONSETTING = "BuildInfo/finishversionsetting.txt";
+    private static string[] _str_buildInfo = null;
 
+    // build 추출물 경로
     private const string AOS_BUILD_PATH = "Build/AOS";
 
+    // build 구분
     private const string CHECK_AOS_SETTING_APK = "Build/AOSSettingAPK.txt";
     private const string CHECK_AOS_SETTING_AAB = "Build/AOSSettingAAB.txt";
 
+    // build 완료 후 에디터 종료 위함
     private const string CHECK_BUILD = "Build/checkedBuilding.txt";
-
-    private static string[] _str_buildInfo = null;
-
+    
     [MenuItem("Build/AOS/APK")]
     static void BuildAOSAPK() => SetAOS(form: CHECK_AOS_SETTING_APK);
     [MenuItem("Build/AOS/AAB")]
     static void BuildAOSAAB() => SetAOS(form: CHECK_AOS_SETTING_AAB);
 
+    #region AOS
+    /// <summary>
+    /// AOS build Setting
+    /// </summary>
+    /// <param name="form"></param>
     static void SetAOS(string form)
     {
+        FileSettings();
+
         StreamWriter file = File.CreateText(form);
         file.Close();
 
@@ -38,27 +56,26 @@ public class BuildScript : MonoBehaviour
 
         EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
 
+        EditorUserBuildSettings.buildAppBundle = isAAB;
         if (isAAB)
-        {
-            EditorUserBuildSettings.buildAppBundle = isAAB;
             EditorUserBuildSettings.androidBuildSystem = AndroidBuildSystem.Gradle;
-        }
 
+        // Github action에서 apk, aab를 모두 빌드 할 경우 apk와 aab의 version을 맞추기 위함
         if (File.Exists(BUILDINFO_FINISHVERSIONSETTING))
             _str_buildInfo = GetVersion();
         else
             _str_buildInfo = SetVersion(form: form);
 
-        PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, "com.AeDeong.Incremental");
+        PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, IDENTIFIER);
         PlayerSettings.bundleVersion = $"{VERSION}{_str_buildInfo[0]}";
-        PlayerSettings.productName = "Incremental";
+        PlayerSettings.productName = PRODUCT_NAME;
 
         PlayerSettings.Android.bundleVersionCode = Convert.ToInt32(_str_buildInfo[2]);
 
-        PlayerSettings.Android.keystoreName = "src/AeDeong.keystore";
-        PlayerSettings.Android.keystorePass = "password";
-        PlayerSettings.Android.keyaliasName = "aedeong";
-        PlayerSettings.Android.keyaliasPass = "password";
+        PlayerSettings.Android.keystoreName = KEYSTORE_NAME;
+        PlayerSettings.Android.keystorePass = KEYSTORE_PASS;
+        PlayerSettings.Android.keyaliasName = KEYALIAS_NAME;
+        PlayerSettings.Android.keyaliasPass = KEYALIAS_PASS;
 
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);
         PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.Android, ApiCompatibilityLevel.NET_4_6);
@@ -66,6 +83,10 @@ public class BuildScript : MonoBehaviour
         CheckCI();
     }
 
+    /// <summary>
+    /// AOS Build
+    /// </summary>
+    /// <param name="isAAB"></param>
     static void BuildAOS(bool isAAB)
     {
         string filePath = CHECK_BUILD;
@@ -75,7 +96,7 @@ public class BuildScript : MonoBehaviour
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
 
         string extension = isAAB == true ? ".aab" : ".apk";
-        buildPlayerOptions.locationPathName = AOS_BUILD_PATH + "/" + $"{VERSION}{_str_buildInfo[0]}{_str_buildInfo[1]}" + extension;
+        buildPlayerOptions.locationPathName = AOS_BUILD_PATH + "/" + $"{VERSION}{_str_buildInfo[0]}.{_str_buildInfo[1]}" + extension;
 
         buildPlayerOptions.options = BuildOptions.None;
         buildPlayerOptions.scenes = GetScenes();
@@ -91,7 +112,24 @@ public class BuildScript : MonoBehaviour
         if (summary.result == BuildResult.Failed)
             Debug.Log("AOSBuild failed");
     }
+    #endregion
 
+    /// <summary>
+    /// build 관련 폴더 및 파일 정리
+    /// </summary>
+    static private void FileSettings()
+    {
+        if (Directory.Exists("Build"))
+            Directory.Delete("Build", true);
+
+        Directory.CreateDirectory("Build");
+    }
+
+    /// <summary>
+    /// version 자동화 관련
+    /// </summary>
+    /// <param name="form"></param>
+    /// <returns></returns>
     static string[] SetVersion(string form)
     {
         if (!File.Exists(BUILDINFO_PATH))
@@ -125,8 +163,16 @@ public class BuildScript : MonoBehaviour
         return buildInfo;
     }
 
+    /// <summary>
+    /// version 자동화 관련
+    /// </summary>
+    /// <returns></returns>
     static string[] GetVersion() => File.ReadAllText(BUILDINFO_PATH).Split(',');
 
+    /// <summary>
+    /// https://docs.unity3d.com/ScriptReference/EditorBuildSettingsScene.html
+    /// </summary>
+    /// <returns></returns>
     private static string[] GetScenes()
     {
         EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
@@ -157,11 +203,16 @@ public class BuildScript : MonoBehaviour
             if (File.Exists(CHECK_AOS_SETTING_AAB))
             {
                 File.Delete(CHECK_AOS_SETTING_AAB);
-                BuildScript.BuildAOS(isAAB: false);
+                BuildScript.BuildAOS(isAAB: true);
             }
         };
     }
 
+    /// <summary>
+    /// https://docs.unity3d.com/ScriptReference/Callbacks.DidReloadScripts.html
+    /// Build setting 후 compile이 필요한 경우를 대비
+    /// 후 build
+    /// </summary>
     [UnityEditor.Callbacks.DidReloadScripts]
     private static void CheckCI()
     {
@@ -169,6 +220,9 @@ public class BuildScript : MonoBehaviour
             EditorCoroutine.StartCoroutine(CheckCompiling());
     }
 
+    /// <summary>
+    /// https://docs.unity3d.com/ScriptReference/Build.IPostprocessBuildWithReport.OnPostprocessBuild.html
+    /// </summary>
     public int callbackOrder { get { return 0; } }
     public void OnPostprocessBuild(BuildReport report)
     {
@@ -181,6 +235,9 @@ public class BuildScript : MonoBehaviour
     }
 }
 
+/// <summary>
+/// https://docs.unity3d.com/kr/2022.2/Manual/com.unity.editorcoroutines.html
+/// </summary>
 class EditorCoroutine
 {
     private IEnumerator iEnumerator = null;
