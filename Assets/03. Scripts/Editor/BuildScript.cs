@@ -47,8 +47,6 @@ public class BuildScript : MonoBehaviour, IPostprocessBuildWithReport
     /// <param name="form"></param>
     static void SetAOS(string form)
     {
-        FileSettings();
-
         StreamWriter file = File.CreateText(form);
         file.Close();
 
@@ -113,17 +111,6 @@ public class BuildScript : MonoBehaviour, IPostprocessBuildWithReport
             Debug.Log("AOSBuild failed");
     }
     #endregion
-
-    /// <summary>
-    /// build 관련 폴더 및 파일 정리
-    /// </summary>
-    static private void FileSettings()
-    {
-        if (Directory.Exists("Build"))
-            Directory.Delete("Build", true);
-
-        Directory.CreateDirectory("Build");
-    }
 
     /// <summary>
     /// version 자동화 관련
