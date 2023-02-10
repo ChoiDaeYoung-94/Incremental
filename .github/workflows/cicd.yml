@@ -46,8 +46,9 @@ jobs:
     steps:
       - name: Remove build folder, log file
         run: |
-          rm -rf $AND_BUILD_PATH
           rm -f $AND_LOG_PATH
+          rm -rf $AND_BUILD_PATH
+
       - name: Create build folder
         run: mkdir -p $AND_BUILD_PATH
 
