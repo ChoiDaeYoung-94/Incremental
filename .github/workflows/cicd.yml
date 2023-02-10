@@ -38,7 +38,7 @@ jobs:
     runs-on: [ self-hosted, buildpc ]
     env:
       # build log 파일 경로 입력 ex - ./프로젝트명/Build/AndroidBuildLog.txt
-      AND_LOG_PATH: D:/Documents/01.Projects/04.Working/01.Unity_Projects/actions-runner/_work/Incremental/Incremental/Incremental/Build/AndroidBuildLog.txt"
+      AND_LOG_PATH: "D:/Documents/01.Projects/04.Working/01.Unity_Projects/actions-runner/_work/Incremental/Incremental/Incremental/Build/AndroidBuildLog.txt"
 
       # AOS build 추출물 경로 입력 ex - ./프로젝트명/Build/Android
       AND_BUILD_PATH: "./Incremental/Build/Android"
