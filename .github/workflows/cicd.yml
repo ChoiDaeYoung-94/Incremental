@@ -7,13 +7,13 @@ on:
 
 env:
   # BuildPC의 UNITY_APP_PATH 참고 - https://docs.unity3d.com/kr/2021.3/Manual/EditorCommandLineArguments.html
-  UNITY_APP_PATH: "D:/Unity/2020.3.25f1/Editor/Unity.exe"
-
-  # Build 추출물이 나올 경로(AOS, IOS) + 프로젝트명 ex - D:/Documents/Builds/Incremental
-  BUILD_PATH: D:/Documents/01.Projects/04.Working/01.Unity_Projects/01.Builds/Incremental
+  UNITY_APP_PATH: /Applications/Unity/Hub/Editor/2020.3.25f1/Unity.app/Contents/MacOS/Unity
 
   # 프로젝트명 ex - Incremental
   REPO_NAME: Incremental
+
+  # Build 추출물이 나올 경로(AOS, IOS) + 프로젝트명 ex - ./프로잭트명/Build
+  BUILD_PATH: ./Incremental/Build
 
 jobs:
   Checkout:
@@ -37,34 +37,18 @@ jobs:
     # 생성한 runner의 labels로 runner를 구분 참고 - https://docs.github.com/en/actions/using-jobs/choosing-the-runner-for-a-job
     runs-on: [ self-hosted, buildpc ]
     env:
-      # build log 파일 경로 입력 ex - ./프로젝트명/Build/AndroidBuildLog.txt
-      AND_LOG_PATH: "D:/Documents/01.Projects/04.Working/01.Unity_Projects/actions-runner/_work/Incremental/Incremental/Incremental/Build/AndroidBuildLog.txt"
-
-      # AOS build 추출물 경로 입력 ex - ./프로젝트명/Build/Android
-      AND_BUILD_PATH: "./Incremental/Build/Android"
+      # build finishversionsetting 파일 경로 입력 ex - ./프로젝트명/BuildInfo/finishversionsetting.txt
+      AND_SETTING_PATH: ./Incremental/BuildInfo/finishversionsetting.txt
 
     steps:
-      - name: Remove build folder, log file
+      - name: Refresh build files
         run: |
-          rm $AND_LOG_PATH
-          rm -rf $AND_BUILD_PATH
+          rm -rf $BUILD_PATH
+          rm -f $AND_SETTING_PATH
+          mkdir -p $BUILD_PATH
 
-      - name: Create build folder
-        run: mkdir -p $AND_BUILD_PATH
-
-      - name: Unity build AAB
+      - name: Unity build AAB, APK
         # 프로젝트명 주의, GITHUB_WORKSPACE - https://docs.github.com/ko/actions/learn-github-actions/variables#default-environment-variables
-        run: $UNITY_APP_PATH -logFile $AND_LOG_PATH -buildTarget Android -projectPath $GITHUB_WORKSPACE/Incremental -executeMethod BuildScript.BuildAOSAAB
-
-      - name: Unity build APK
-        # 프로젝트명 주의
-        run: $UNITY_APP_PATH -logFile $AND_LOG_PATH -buildTarget Android -projectPath $GITHUB_WORKSPACE/Incremental -executeMethod BuildScript.BuildAOSAPK
-
-      - name: Print build log
-        run: cat $AND_LOG_PATH
-
-      - name: Backup build
         run: |
-          current_time=$(date "+%Y.%m.%d-%H.%M.%S")
-          mkdir -p $BUILD_PATH/$current_time
-          mv $AND_BUILD_PATH $BUILD_PATH/$current_time
+          $UNITY_APP_PATH -logFile $BUILD_PATH/AndroidBuildLog.txt -buildTarget Android -projectPath $GITHUB_WORKSPACE/Incremental -executeMethod BuildScript.BuildAOSAAB
+          $UNITY_APP_PATH -logFile $BUILD_PATH/AndroidBuildLog.txt -buildTarget Android -projectPath $GITHUB_WORKSPACE/Incremental -executeMethod BuildScript.BuildAOSAPK
