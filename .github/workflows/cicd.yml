@@ -13,7 +13,7 @@ env:
   REPO_NAME: Incremental
 
   # Build 추출물이 나올 경로(AOS, IOS) + 프로젝트명 ex - ./프로잭트명/Build
-  BUILD_PATH: ./Incremental/Build
+  BUILD_PATH: ./Incremental/Build  
 
 jobs:
   Checkout:
@@ -46,9 +46,22 @@ jobs:
           rm -rf $BUILD_PATH
           rm -f $AND_SETTING_PATH
           mkdir -p $BUILD_PATH
-
-      - name: Unity build AAB, APK
+        # AppCenter에 aab를 upload 시 apk로 다운로드 할 수 있기 때문에 CI에서 APK 빌드는 제외
+      - name: Unity build
         # 프로젝트명 주의, GITHUB_WORKSPACE - https://docs.github.com/ko/actions/learn-github-actions/variables#default-environment-variables
         run: |
           $UNITY_APP_PATH -logFile $BUILD_PATH/AndroidBuildLog.txt -buildTarget Android -projectPath $GITHUB_WORKSPACE/Incremental -executeMethod BuildScript.BuildAOSAAB
-          $UNITY_APP_PATH -logFile $BUILD_PATH/AndroidBuildLog.txt -buildTarget Android -projectPath $GITHUB_WORKSPACE/Incremental -executeMethod BuildScript.BuildAOSAPK
+
+  # 참고 - https://github.com/microsoft/fastlane-plugin-appcenter
+  Deploy_AppCenter:
+    needs: Android_Build
+    runs-on: [ self-hosted, buildpc ]
+    steps:
+      - name: Output path
+        run: |
+          output=$(find $GITHUB_WORKSPACE/$REPO_NAME/Build/AOS -name "*.aab")
+          echo $output
+          echo "aabpath=$output" >> $GITHUB_ENV
+      - name: Upload output to AppCenter
+        working-directory: ${{ env.REPO_NAME }}
+        run: fastlane upload_aab file:"${{ env.aabpath }}" api_token:"${{ secrets.APP_CENTER_TOKEN }}" app_name:"Incremental_AOS" release_notes:"${{ github.event.comment.body }}"
