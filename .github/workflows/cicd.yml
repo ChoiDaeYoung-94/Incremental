@@ -7,7 +7,7 @@ on:
 
 env:
   # BuildPC의 UNITY_APP_PATH 참고 - https://docs.unity3d.com/kr/2021.3/Manual/EditorCommandLineArguments.html
-  UNITY_APP_PATH: /Applications/Unity/Hub/Editor/2020.3.25f1/Unity.app/Contents/MacOS/Unity
+  UNITY_APP_PATH: "C:\Program Files\Unity\Hub\Editor\2020.3.25f1\Editor\Unity.exe"
 
   # 프로젝트명 ex - Incremental
   REPO_NAME: Incremental
