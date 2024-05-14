@@ -34,7 +34,7 @@ public class BuildScript : MonoBehaviour, IPostprocessBuildWithReport
 
     // build 완료 후 에디터 종료 위함
     private const string CHECK_BUILD = "Build/checkedBuilding.txt";
-    
+
     [MenuItem("Build/AOS/APK")]
     static void BuildAOSAPK() => SetAOS(form: CHECK_AOS_SETTING_APK);
     [MenuItem("Build/AOS/AAB")]
@@ -96,7 +96,7 @@ public class BuildScript : MonoBehaviour, IPostprocessBuildWithReport
         string extension = isAAB == true ? ".aab" : ".apk";
         buildPlayerOptions.locationPathName = AOS_BUILD_PATH + "/" + $"{VERSION}{_str_buildInfo[0]}.{_str_buildInfo[1]}" + extension;
 
-        buildPlayerOptions.options = BuildOptions.None;
+        buildPlayerOptions.options = isAAB == true ? BuildOptions.CompressWithLz4HC : BuildOptions.CompressWithLz4;
         buildPlayerOptions.scenes = GetScenes();
         buildPlayerOptions.target = BuildTarget.Android;
         buildPlayerOptions.targetGroup = BuildTargetGroup.Android;
