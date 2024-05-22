@@ -36,6 +36,8 @@ public class Login : MonoBehaviour
     TMPro.TMP_Text _TMP_NickName = null;
     [SerializeField, Tooltip("GO - Warning")]
     GameObject _go_Warning = null;
+    [SerializeField, Tooltip("GO - WarningNAE")]
+    GameObject _go_WarningNAE = null;
 
     [Header("--- 참고용 ---")]
     Coroutine _co_Login = null;
@@ -125,7 +127,7 @@ public class Login : MonoBehaviour
     {
         string id = $"{Social.localUser.id}@AeDeong.com";
 
-        var request = new LoginWithEmailAddressRequest { Email = id, Password = Social.localUser.userName };
+        var request = new LoginWithEmailAddressRequest { Email = id, Password = "AeDeong" };
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginWithPlayFabSuccess, OnLoginWithPlayFabFailure);
     }
 
@@ -136,7 +138,31 @@ public class Login : MonoBehaviour
 
         Managers.DataM.SetPlayerID(result.PlayFabId);
 
-        GoGame();
+        GetPlayerProfile(Managers.DataM.GetPlayerID());
+    }
+
+    void GetPlayerProfile(string playFabId)
+    {
+        PlayFabClientAPI.GetPlayerProfile(new GetPlayerProfileRequest()
+        {
+            PlayFabId = playFabId,
+            ProfileConstraints = new PlayerProfileViewConstraints()
+            {
+                ShowDisplayName = true
+            }
+        },
+        result =>
+        {
+            if (string.IsNullOrEmpty(result.PlayerProfile.DisplayName))
+                _go_NickName.SetActive(true);
+            else
+                GoGame();
+        },
+        error =>
+        {
+            //Debug.LogError(error.GenerateErrorReport());
+            Debug.Log("Failed to get profile");
+        });
     }
 
     void OnLoginWithPlayFabFailure(PlayFabError error)
@@ -144,33 +170,17 @@ public class Login : MonoBehaviour
         Debug.Log("Failed LoginWithPlayFab -> SignUpWithPlayFab");
 
         // nickname 먼저 설정
-        _go_NickName.SetActive(true);
-    }
-
-    /// <summary>
-    /// Panel_NickName -> Btn_Confirm
-    /// </summary>
-    public void CheckNickName()
-    {
-        string str_temp = _TMP_NickName.text;
-
-        if (string.IsNullOrEmpty(str_temp) || str_temp.Contains(" ") || str_temp.Length < 2 || str_temp.Length > 10)
-            _go_Warning.SetActive(true);
-        else
-        {
-            _go_NickName.SetActive(false);
-            _go_Warning.SetActive(false);
-
-            Managers.DataM._str_NickName = str_temp;
-            SignUpWithPlayFab();
-        }
+        SignUpWithPlayFab();
     }
 
     void SignUpWithPlayFab()
     {
         string id = $"{Social.localUser.id}@AeDeong.com";
 
-        var request = new RegisterPlayFabUserRequest { Email = id, Password = Social.localUser.userName, Username = Social.localUser.userName };
+        Debug.Log(Social.localUser.id);
+        Debug.Log(Social.localUser.userName);
+
+        var request = new RegisterPlayFabUserRequest { Email = id, Password = "AeDeong", RequireBothUsernameAndEmail = false };
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterWithPlayFabSuccess, OnRegisterWithPlayFabFailure);
     }
 
@@ -181,20 +191,57 @@ public class Login : MonoBehaviour
 
         Managers.DataM.SetPlayerID(result.PlayFabId);
 
-        GoGame();
+        // nickname 설정
+        _go_NickName.SetActive(true);
     }
 
     void OnRegisterWithPlayFabFailure(PlayFabError error)
     {
         Debug.LogWarning($"Failed SignUpWithPlayFab -> {error}");
-        _TMP_load.text = "Failed SignUpWithPlayFab... :'(";
+        _TMP_load.text = $"Failed SignUpWithPlayFab... :'( \n{error}";
+    }
+
+    /// <summary>
+    /// Panel_NickName -> Btn_Confirm
+    /// </summary>
+    public void CheckNickName()
+    {
+        string str_temp = _TMP_NickName.text;
+
+        if (string.IsNullOrEmpty(str_temp) || str_temp.Contains(" ") || str_temp.Length < 3 || str_temp.Length > 20)
+            _go_Warning.SetActive(true);
+        else
+            UpdateDisplayName(str_temp);
+    }
+
+    void UpdateDisplayName(string name)
+    {
+        PlayFabClientAPI.UpdateUserTitleDisplayName(new UpdateUserTitleDisplayNameRequest
+        {
+            DisplayName = name
+        },
+        result =>
+        {
+            _go_NickName.SetActive(false);
+            _go_Warning.SetActive(false);
+            _go_WarningNAE.SetActive(false);
+
+            Managers.DataM._str_NickName = name;
+
+            GoGame();
+        },
+        error =>
+        {
+            //Debug.LogError(error.GenerateErrorReport());
+            _go_WarningNAE.SetActive(true);
+        });
     }
     #endregion
 
     #region LoginWithTestAccount
     void LoginWithTestAccount()
     {
-        var request = new LoginWithEmailAddressRequest { Email = "Test@AeDeong.com", Password = "TestAccount" };
+        var request = new LoginWithEmailAddressRequest { Email = "testAccount@AeDeong.com", Password = "TestAccount" };
         PlayFabClientAPI.LoginWithEmailAddress(request,
             (success) =>
             {
@@ -206,14 +253,14 @@ public class Login : MonoBehaviour
 
     void SignUpWithTestAccount()
     {
-        var request = new RegisterPlayFabUserRequest { Email = "Test@AeDeong.com", Password = "TestAccount", Username = "TestAccount" };
+        var request = new RegisterPlayFabUserRequest { Email = "testAccount@AeDeong.com", Password = "TestAccount", RequireBothUsernameAndEmail = false };
         PlayFabClientAPI.RegisterPlayFabUser(request,
             (success) =>
             {
                 Managers.DataM.SetPlayerID(success.PlayFabId);
-                GoGame();
+                UpdateDisplayName("testAccount");
             },
-            (failed) => Debug.Log("Failed SignUpWithTestAccount"));
+            (failed) => Debug.Log("Failed SignUpWithTestAccount  " + failed.ErrorMessage));
     }
     #endregion
 
