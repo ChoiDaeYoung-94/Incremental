@@ -1,9 +1,9 @@
 lastUpgrade=01014
 proj.pluginVersion=0.10.14
-proj.AppId=623903764054
-and.BundleId=com.AeDeong.Incremental
+proj.AppId=1024889552053
+and.BundleId=com.AeDeong.orgIncremental
 proj.classDir=Assets
 proj.ConstantsClassName=GPGSIds
-and.ResourceData=%3c%3fxml+version%3d%221.0%22+encoding%3d%22utf-8%22%3f%3e%0d%0a%3c%21--Google+Play+game+services+IDs.+Save+this+file+as+res%2fvalues%2fgames-ids.xml+in+your+project.--%3e%0d%0a%3cresources%3e%0d%0a++%3c%21--app_id--%3e%0d%0a++%3cstring+name%3d%22app_id%22+translatable%3d%22false%22%3e623903764054%3c%2fstring%3e%0d%0a++%3c%21--package_name--%3e%0d%0a++%3cstring+name%3d%22package_name%22+translatable%3d%22false%22%3ecom.AeDeong.Incremental%3c%2fstring%3e%0d%0a++%3c%21--leaderboard+Incremental--%3e%0d%0a++%3cstring+name%3d%22leaderboard_incremental%22+translatable%3d%22false%22%3eCgkI1ty_nJQSEAIQAQ%3c%2fstring%3e%0d%0a%3c%2fresources%3e
-and.ClientId=623903764054-ujla742pvse8j2vtaunou2a6qr34tpvg.apps.googleusercontent.com
+and.ResourceData=%3c%3fxml+version%3d%221.0%22+encoding%3d%22utf-8%22%3f%3e%0d%0a%3c%21--Google+Play+game+services+IDs.+Save+this+file+as+res%2fvalues%2fgames-ids.xml+in+your+project.--%3e%0d%0a%3cresources%3e%0d%0a++%3c%21--app_id--%3e%0d%0a++%3cstring+name%3d%22app_id%22+translatable%3d%22false%22%3e1024889552053%3c%2fstring%3e%0d%0a++%3c%21--package_name--%3e%0d%0a++%3cstring+name%3d%22package_name%22+translatable%3d%22false%22%3ecom.AeDeong.orgIncremental%3c%2fstring%3e%0d%0a%3c%2fresources%3e
+and.ClientId=1024889552053-aq8f3qli4h0r6c3vauv8iduicumd2v2k.apps.googleusercontent.com
 android.SetupDone=true
