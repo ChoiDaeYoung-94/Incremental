@@ -19,14 +19,29 @@ https://user-images.githubusercontent.com/66999597/215687283-d704df78-6818-46a8-
 - Unity2020.3.25f1 LTS
 
 
-## SDK, Package ...
+## SDK, Package, Library ...
 - [PlayFabEditorExtensions, PlayFabSDK](https://docs.microsoft.com/ko-kr/gaming/playfab/sdks/unity3d/installing-unity3d-sdk)
 - [play games plugin](https://github.com/playgameservices/play-games-plugin-for-unity/releases)
+- [DoTween](https://dotween.demigiant.com/)
+- [MiniJson ](https://github.com/Unity-Technologies/UnityCsReference/blob/master/External/JsonParsers/MiniJson/MiniJSON.cs)
+- [IngameDebugConsole](https://assetstore.unity.com/packages/tools/gui/in-game-debug-console-68068)
+- [Safe Area Helper](https://assetstore.unity.com/packages/tools/gui/safe-area-helper-130488)
+
+
+## Technologies and Techniques
+- CICD를 통해 디버깅이 가능한 테스트용 빌드와 실제 스토어에 올라갈 빌드를 분리
+- Singleton 기법 적용(Managers.cs)
+- PoolManager.cs를 통해 Object Pooling 적용
+- DoTween으로 간단한 애니메이션 적용
+- google, playfab 로그인 적용
+  - playfab 데이터 저장을 위해 사용
+- Game scene에서 사용하는 UI 틀 제작
 
 
 ## Download
 
-- [Google Play](https://play.google.com/store/apps/details?id=com.AeDeong.Incremental)
+- Google Play 개발자 계정 해지 이슈로 인해 스토어에서 내려감
+  - [APK](https://drive.google.com/file/d/1wXsmWgdwepB5PDeoODm1UkCUv7vbZas2/view?usp=drive_link)
 - Clone the repository locally:
 ~~~
 git clone https://github.com/ChoiDaeYoung-94/Incremental.git
