@@ -1,6 +1,6 @@
 # About
 
-unity 3d incremental game project
+unity(2020.3.25f1 LTS) 2d incremental game project
 
 
 ### Trailer
@@ -11,15 +11,14 @@ https://user-images.githubusercontent.com/66999597/215687283-d704df78-6818-46a8-
 ## Getting Started
 
 1. Clone
-2. [Download Assets](https://drive.google.com/file/d/1VuCwsd5O7US-Bosk__K-TOJ5crAo-YVt/view?usp=sharing)
-3. Open Project in Unity
+~~~
+git clone https://github.com/ChoiDaeYoung-94/Incremental.git
+~~~
+3. [Download Assets](https://drive.google.com/file/d/1VuCwsd5O7US-Bosk__K-TOJ5crAo-YVt/view?usp=sharing)
+4. Open Project in Unity
 
 
-## Requirements
-- Unity2020.3.25f1 LTS
-
-
-## SDK, Package, Library ...
+## SDK, Package ...
 - [PlayFabEditorExtensions, PlayFabSDK](https://docs.microsoft.com/ko-kr/gaming/playfab/sdks/unity3d/installing-unity3d-sdk)
 - [play games plugin](https://github.com/playgameservices/play-games-plugin-for-unity/releases)
 - [DoTween](https://dotween.demigiant.com/)
@@ -40,12 +39,8 @@ https://user-images.githubusercontent.com/66999597/215687283-d704df78-6818-46a8-
 
 ## Download
 
-- Google Play 개발자 계정 해지 이슈로 인해 스토어에서 내려감
-  - [APK](https://drive.google.com/file/d/1wXsmWgdwepB5PDeoODm1UkCUv7vbZas2/view?usp=drive_link)
-- Clone the repository locally:
-~~~
-git clone https://github.com/ChoiDaeYoung-94/Incremental.git
-~~~
+- TODO > GOOGLE PLAY
+- [APK](https://drive.google.com/file/d/1wXsmWgdwepB5PDeoODm1UkCUv7vbZas2/view?usp=drive_link)
 
 
 ## Build
@@ -126,6 +121,6 @@ main branch에 push 할 경우 Github Action이 작동하고 BuildPC에서 빌�
 
 ## 6. 문의
 
-이 개인정보 보호정책에 대해 질문이나 제안이 있으시면, chleodud1410@gmail.com 으로 연락해 주십시오.
+이 개인정보 보호정책에 대해 질문이나 제안이 있으시면, doeud1410@gmail.com 으로 연락해 주십시오.
 
 이 정책은 2024년 5월 23일부터 유효합니다.
