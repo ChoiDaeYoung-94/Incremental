@@ -39,7 +39,7 @@ git clone https://github.com/ChoiDaeYoung-94/Incremental.git
 
 ## Download
 
-- TODO > GOOGLE PLAY
+- [GOOGLE PLAY](https://play.google.com/store/apps/details?id=com.AeDeong.orgIncremental)
 - [APK](https://drive.google.com/file/d/1wXsmWgdwepB5PDeoODm1UkCUv7vbZas2/view?usp=drive_link)
 
 
