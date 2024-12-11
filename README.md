@@ -1,6 +1,7 @@
 # About
 
 unity(2020.3.25f1 LTS) 2d incremental game project
+
 방치형 게임의 틀을 만들어보고자 진행하였던 프로젝트 입니다.
 
 
