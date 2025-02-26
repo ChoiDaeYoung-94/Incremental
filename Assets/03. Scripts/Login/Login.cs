@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 
 #if UNITY_ANDROID
 using GooglePlayGames;
+using GooglePlayGames.BasicApi;
 #endif
 
 using PlayFab;
@@ -105,21 +106,25 @@ public class Login : MonoBehaviour
     #region Login & SignUp
     void LoginWithGoogle()
     {
-        if (Social.localUser.authenticated == false)
+        PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
+    }
+
+    private void ProcessAuthentication(SignInStatus status)
+    {
+        if (status == SignInStatus.Success)
         {
-            Social.localUser.Authenticate((bool success, string error) =>
-            {
-                if (success)
-                {
-                    Debug.Log("Success LoginWithGoogle");
-                    LoginWithPlayFab();
-                }
-                else
-                {
-                    Debug.LogWarning($"Failed LoginWithGoogle -> {error}");
-                    _TMP_load.text = "Failed LoginWithGoogle... :'(";
-                }
-            });
+            // Continue with Play Games Services
+            Debug.Log("Success LoginGoogle");
+            LoginWithPlayFab();
+        }
+        else
+        {
+            // Disable your integration with Play Games Services or show a login button
+            // to ask users to sign-in. Clicking it should call
+            // PlayGamesPlatform.Instance.ManuallyAuthenticate(ProcessAuthentication);
+
+            Debug.Log($"Failed LoginGoogle{status}");
+            _TMP_load.text = "Failed LoginWithGoogle... :'(";
         }
     }
 
